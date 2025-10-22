@@ -8,7 +8,7 @@ from homeassistant.helpers.translation import async_get_translations
 
 import voluptuous as vol
 
-from . import get_config_value
+from . import create_modbus_client, get_config_value
 from .const import *
 
 _LOGGER = logging.getLogger(__name__)
@@ -90,15 +90,32 @@ async def create_schema(hass, config_entry=None, user_input=None, type="init"):
         })
 
 
-def check_user_input(user_input):
+async def check_user_input(user_input):
     errors = {}
-    # if user_input is not None:
-    #     exp_min = user_input["wda_exp_min"]
-    #     exp_max = user_input["wda_exp_max"]
+    client = create_modbus_client(user_input)
+    try:
+        result = await client.connect()
+        if not result:
+            errors["base"] = "ec_modbus_connect_error"
+            _LOGGER.error("Failed to connect to Modbus device")
+        else:
+            adapter_uptime = await client.read_holding_registers(
+                address=0x012,
+                count=2,
+                device_id=1
+            )
 
-    #     if exp_min > exp_max:
-    #         errors["base"] = "exp_min_must_be_less"
-    #         errors["wda_exp_min"] = "exp_min_must_be_less"
+            if adapter_uptime.isError():
+                errors["base"] = "ec_uptime_reading_error"
+                _LOGGER.error(
+                    "Modbus error reading uptime from adapter: %s", adapter_uptime)
+            else:
+                _LOGGER.info("Modbus reading uptime value: %s" % adapter_uptime.registers)
+
+        _LOGGER.info("Successfully connected to Modbus device")
+    except Exception as e:
+        errors["base"] = "ec_modbus_connect_error"
+        _LOGGER.error("Failed to connect to Modbus device: %s" % e)
     return errors
 
 
@@ -138,7 +155,7 @@ class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
         if user_input is not None:
             self.config_data.update(user_input)
-            errors = check_user_input(self.config_data)
+            errors = await check_user_input(self.config_data)
             if not errors:
                 return self.async_create_entry(
                     title=self.config_data["name"],
@@ -199,7 +216,7 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
         errors = {}
         if user_input is not None:
             self.config_data.update(user_input)
-            errors = check_user_input(self.config_data)
+            errors = await check_user_input(self.config_data)
             if not errors:
                 # Update configuration
                 self.hass.config_entries.async_update_entry(

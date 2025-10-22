@@ -20,8 +20,8 @@
             }
         },
         "error": {
-            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
-            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+            "ec_modbus_connect_error": "Невозможно подключиться к Modbus устройству. Проверьте введенные параметры!",
+            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!"
         }
     },
     "options": {
@@ -44,8 +44,8 @@
             }
         },
         "error": {
-            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
-            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+            "ec_modbus_connect_error": "Невозможно подключиться к Modbus устройству. Проверьте введенные параметры!",
+            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!"
         }
     },
     "common": {

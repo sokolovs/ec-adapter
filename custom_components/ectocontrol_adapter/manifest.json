@@ -3,6 +3,7 @@
     "name": "ectoControl Adapter Plug-in",
     "codeowners": ["@sokolovs"],
     "config_flow": true,
+    "requirements": ["pymodbus==3.11.3"],
     "dependencies": [],
     "documentation": "https://github.com/sokolovs/ec-adapter/wiki",
     "iot_class": "local_polling",
