@@ -1,0 +1,54 @@
+{
+    "title": "ectoControl Adapter",
+    "config": {
+        "step": {
+            "user": {
+                "title": "Connection Setup",
+                "description": "Set the connection parameters to the adapter using the Modbus protocol.",
+                "data": {
+                    "name": "Adapter Name",
+                    "response_timeout": "Response timeout, s",
+                    "modbus_type": "Connection type",
+                    "host": "Host",
+                    "port": "Port",
+                    "device": "Device Path i.e. /dev/ttyUSB0",
+                    "baudrate": "Baud Rate, bps",
+                    "bytesize": "Data Bits",
+                    "parity": "Parity",
+                    "stopbits": "Stop Bits"
+                }
+            }
+        },
+        "error": {
+            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
+            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Changing Connection Settings",
+                "description": "Updating adapter connection parameters via the Modbus protocol.",
+                "data": {
+                    "name": "Adapter Name",
+                    "response_timeout": "Response timeout, s",
+                    "modbus_type": "Connection type",
+                    "host": "Host",
+                    "port": "Port",
+                    "device": "Device Path i.e. /dev/ttyUSB0",
+                    "baudrate": "Baud Rate, bps",
+                    "bytesize": "Data Bits",
+                    "parity": "Parity",
+                    "stopbits": "Stop Bits"
+                }
+            }
+        },
+        "error": {
+            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
+            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+        }
+    },
+    "common": {
+        "not_selected": "Not selected..."
+    }
+}

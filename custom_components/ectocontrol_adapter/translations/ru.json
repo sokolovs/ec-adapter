@@ -1,0 +1,54 @@
+{
+    "title": "Адаптер ectoControl",
+    "config": {
+        "step": {
+            "user": {
+                "title": "Настройка подключения",
+                "description": "Настройте параметры подключения к адаптеру по протоколу Modbus.",
+                "data": {
+                    "name": "Название адаптера",
+                    "response_timeout": "Таймаут ожидания ответа, с",
+                    "modbus_type": "Тип подключения",
+                    "host": "Хост",
+                    "port": "Порт",
+                    "device": "Путь к устройству, например /dev/ttyUSB0",
+                    "baudrate": "Скорость, bps",
+                    "bytesize": "Биты данных",
+                    "parity": "Чётность",
+                    "stopbits": "Стоп биты"
+                }
+            }
+        },
+        "error": {
+            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
+            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Изменение настроек подключения",
+                "description": "Обновление параметров подключения адаптера по протоколу Modbus",
+                "data": {
+                    "name": "Название адаптера",
+                    "response_timeout": "Таймаут ожидания ответа, с",
+                    "modbus_type": "Тип подключения",
+                    "host": "Хост",
+                    "port": "Порт",
+                    "device": "Путь к устройству, например /dev/ttyUSB0",
+                    "baudrate": "Скорость, bps",
+                    "bytesize": "Биты данных",
+                    "parity": "Чётность",
+                    "stopbits": "Стоп биты"
+                }
+            }
+        },
+        "error": {
+            "exp_min_must_be_less": "The min. exponent must be less than the max. exponent.",
+            "wda_exp_min.exp_min_must_be_less": "The min. exponent must be less than the max. exponent."
+        }
+    },
+    "common": {
+        "not_selected": "Не выбрано..."
+    }
+}
