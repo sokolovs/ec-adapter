@@ -1,1 +1,1 @@
-# 🔥 ectoControl Adapter Plug-in for HomeAssistant
+# 🔥 ectoControl Adapter Integration for HomeAssistant

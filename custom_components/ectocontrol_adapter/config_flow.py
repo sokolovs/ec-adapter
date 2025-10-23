@@ -1,7 +1,6 @@
 import logging
 
 from homeassistant import config_entries
-from homeassistant.const import Platform
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.translation import async_get_translations
@@ -9,7 +8,8 @@ from homeassistant.helpers.translation import async_get_translations
 import voluptuous as vol
 
 from . import create_modbus_client, get_config_value
-from .const import *
+from .const import *  # noqa F403
+from .registers import REGISTERS, REG_ADAPTER_UPTIME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ async def create_schema(hass, config_entry=None, user_input=None, type="init"):
             # Serial settings
             vol.Required(
                 "device",
-                default=get_config("port", "/dev/ttyUSB0")): str,
+                default=get_config("device", "/dev/ttyUSB0")): str,
 
             vol.Required(
                 "baudrate",
@@ -87,6 +87,9 @@ async def create_schema(hass, config_entry=None, user_input=None, type="init"):
                 "modbus_type",
                 default=get_config("modbus_type", DEFAULT_MODBUS_TYPE)):
                     vol.All(vol.Coerce(str), vol.In(MODBUS_TYPES)),
+
+            vol.Required("slave", default=get_config("slave", DEFAULT_SLAVE_ID)):
+                vol.All(vol.Coerce(int), vol.Range(min=0, max=247)),
         })
 
 
@@ -100,9 +103,9 @@ async def check_user_input(user_input):
             _LOGGER.error("Failed to connect to Modbus device")
         else:
             adapter_uptime = await client.read_holding_registers(
-                address=0x012,
-                count=2,
-                device_id=1
+                address=REG_ADAPTER_UPTIME,
+                count=REGISTERS[REG_ADAPTER_UPTIME]["count"],
+                device_id=user_input["slave"]
             )
 
             if adapter_uptime.isError():

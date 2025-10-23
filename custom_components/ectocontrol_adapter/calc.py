@@ -1,5 +1,6 @@
 from .const import DEFAULT_EXP_MAX, DEFAULT_EXP_MIN
 
+
 def calc_target(
         outside_temp: float,
         heating_curve: int,

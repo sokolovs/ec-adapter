@@ -5,6 +5,9 @@ SENSOR_UPDATE_SIGNAL = "EC_ADAPTER_OPTIONS_UPDATED"
 # Timout for Modbus response
 DEFAULT_RESPONSE_TIMEOUT = 5
 
+# Default slave/unit ID
+DEFAULT_SLAVE_ID = 1
+
 # Modbus type choices
 DEFAULT_MODBUS_TYPE = "tcp"
 MODBUS_TYPES = {

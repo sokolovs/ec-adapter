@@ -9,6 +9,7 @@
                     "name": "Название адаптера",
                     "response_timeout": "Таймаут ожидания ответа, с",
                     "modbus_type": "Тип подключения",
+                    "slave": "Slave/Unit ID",
                     "host": "Хост",
                     "port": "Порт",
                     "device": "Путь к устройству, например /dev/ttyUSB0",
@@ -21,7 +22,10 @@
         },
         "error": {
             "ec_modbus_connect_error": "Невозможно подключиться к Modbus устройству. Проверьте введенные параметры!",
-            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!"
+            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!",
+            "invalid_integer": "Необходимо ввести целое число",
+            "value_too_small": "Занчение слишком мало",
+            "value_too_large": "Значение слишком велико"
         }
     },
     "options": {
@@ -33,6 +37,7 @@
                     "name": "Название адаптера",
                     "response_timeout": "Таймаут ожидания ответа, с",
                     "modbus_type": "Тип подключения",
+                    "slave": "Slave/Unit ID",
                     "host": "Хост",
                     "port": "Порт",
                     "device": "Путь к устройству, например /dev/ttyUSB0",
@@ -45,7 +50,10 @@
         },
         "error": {
             "ec_modbus_connect_error": "Невозможно подключиться к Modbus устройству. Проверьте введенные параметры!",
-            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!"
+            "ec_uptime_reading_error": "Невозможно прочитать регистр Modbus, содержащий uptime адаптера!",
+            "invalid_integer": "Необходимо ввести целое число",
+            "value_too_small": "Занчение слишком мало",
+            "value_too_large": "Значение слишком велико"
         }
     },
     "common": {

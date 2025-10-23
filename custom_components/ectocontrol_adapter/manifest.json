@@ -1,6 +1,6 @@
 {
     "domain": "ec_adapter",
-    "name": "ectoControl Adapter Plug-in",
+    "name": "ectoControl Adapter Integration",
     "codeowners": ["@sokolovs"],
     "config_flow": true,
     "requirements": ["pymodbus==3.11.3"],

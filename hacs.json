@@ -1,5 +1,5 @@
 {
-  "name": "ectoControl Adapter Plug-in",
+  "name": "ectoControl Adapter Integration",
   "render_readme": true,
-  "homeassistant":  "2024.10.0"
+  "homeassistant":  "2025.10.0"
 }
