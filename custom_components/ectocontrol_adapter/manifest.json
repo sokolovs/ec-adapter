@@ -1,5 +1,5 @@
 {
-    "domain": "ec_adapter",
+    "domain": "eсtocontrol_adapter",
     "name": "ectoControl Adapter Integration",
     "codeowners": ["@sokolovs"],
     "config_flow": true,

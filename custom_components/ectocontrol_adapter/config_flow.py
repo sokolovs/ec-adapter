@@ -9,7 +9,7 @@ import voluptuous as vol
 
 from . import create_modbus_client, get_config_value
 from .const import *  # noqa F403
-from .registers import REGISTERS, REG_ADAPTER_UPTIME
+from .registers import REGISTERS, REG_R_ADAPTER_UPTIME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -103,8 +103,8 @@ async def check_user_input(user_input):
             _LOGGER.error("Failed to connect to Modbus device")
         else:
             adapter_uptime = await client.read_holding_registers(
-                address=REG_ADAPTER_UPTIME,
-                count=REGISTERS[REG_ADAPTER_UPTIME]["count"],
+                address=REG_R_ADAPTER_UPTIME,
+                count=REGISTERS[REG_R_ADAPTER_UPTIME]["count"],
                 device_id=user_input["slave"]
             )
 
