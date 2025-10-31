@@ -1,3 +1,9 @@
+# One byte struct types
+BYTE_TYPES = ['b', 'B']
+
+# Default scan interval
+REG_DEFAULT_SCAN_INTERVAL = 15
+
 # State register offset
 REG_STATE_OFFSET = 0x30
 
@@ -41,18 +47,21 @@ REG_R_COMMAND_REPLY = 0x0081
 # Data types for unpack via python `struct` module
 REGISTERS = {
     REG_R_ADAPTER_STATUS: {
+        "name": "Adapter Status",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 10
     },
     REG_R_ADAPTER_VERSION: {
+        "name": "Adapter Version",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_ADAPTER_UPTIME: {
+        "name": "Adapter Uptime",
         "count": 2,
         "data_type": "I",
         "input_type": "holding",
@@ -60,6 +69,7 @@ REGISTERS = {
         "unit_of_measurement": "s",
     },
     REG_R_COOLANT_MIN_TEMP: {
+        "name": "Minimum Coolant Temperature",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -68,6 +78,7 @@ REGISTERS = {
         "device_class": "temperature"
     },
     REG_R_COOLANT_MAX_TEMP: {
+        "name": "Maximum Coolant Temperature",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -76,6 +87,7 @@ REGISTERS = {
         "device_class": "temperature"
     },
     REG_R_DHW_MIN_TEMP: {
+        "name": "Minimum DHW Temperature",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -84,6 +96,7 @@ REGISTERS = {
         "device_class": "temperature"
     },
     REG_R_DHW_MAX_TEMP: {
+        "name": "Maximum DHW Temperature",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -92,6 +105,7 @@ REGISTERS = {
         "device_class": "temperature"
     },
     REG_R_COOLANT_TEMP: {
+        "name": "Coolant Temperature",
         "count": 1,
         "data_type": "h",
         "input_type": "holding",
@@ -101,6 +115,7 @@ REGISTERS = {
         "scale": 0.1
     },
     REG_R_DHW_TEMP: {
+        "name": "DHW Temperature",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
@@ -110,6 +125,7 @@ REGISTERS = {
         "scale": 0.1
     },
     REG_R_CURRENT_PRESSURE: {
+        "name": "Current Pressure",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -119,6 +135,7 @@ REGISTERS = {
         "scale": 0.1
     },
     REG_R_CURRENT_VOLUME_FLOW_RATE: {
+        "name": "Current Flow Rate",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -128,6 +145,7 @@ REGISTERS = {
         "scale": 0.1
     },
     REG_R_BURNER_MODULATION: {
+        "name": "Burner Modulation",
         "count": 1,
         "data_type": "B",
         "input_type": "holding",
@@ -135,25 +153,28 @@ REGISTERS = {
         "unit_of_measurement": "%"
     },
     REG_R_BURNER_STATUS: {
+        "name": "Burner Status",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 5
     },
-
     REG_R_ERROR_CODE_MAIN: {
+        "name": "Main Error Code",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_ERROR_CODE_ADD: {
+        "name": "Additional Error Code",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_OUTER_TEMP: {
+        "name": "Outer Temperature",
         "count": 1,
         "data_type": "b",
         "input_type": "holding",
@@ -162,18 +183,21 @@ REGISTERS = {
         "device_class": "temperature"
     },
     REG_R_VENDOR_CODE: {
+        "name": "Vendor Code",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_MODEL_CODE: {
+        "name": "Model Code",
         "count": 1,
         "data_type": "H",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_OPENTHERM_ERRORS: {
+        "name": "OpenTherm Errors",
         "count": 1,
         "data_type": "b",
         "input_type": "holding",

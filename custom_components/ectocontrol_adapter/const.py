@@ -1,5 +1,5 @@
 # EC domain
-DOMAIN = "eсtocontrol_adapter"
+DOMAIN = "ectocontrol_adapter"
 SENSOR_UPDATE_SIGNAL = "EC_ADAPTER_OPTIONS_UPDATED"
 
 # Timout for Modbus response

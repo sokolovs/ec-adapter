@@ -7,8 +7,8 @@ from homeassistant.helpers.translation import async_get_translations
 
 import voluptuous as vol
 
-from . import create_modbus_client, get_config_value
 from .const import *  # noqa F403
+from .helpers import create_modbus_client, get_config_value
 from .registers import REGISTERS, REG_R_ADAPTER_UPTIME
 
 _LOGGER = logging.getLogger(__name__)

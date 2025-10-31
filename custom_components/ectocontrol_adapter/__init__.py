@@ -1,19 +1,51 @@
 """ ectoControl Adapter Integration. """
+import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
-from pymodbus import FramerType
-from pymodbus.client import (
-    AsyncModbusSerialClient,
-    AsyncModbusTcpClient,
-    AsyncModbusUdpClient
-)
+from .const import DOMAIN
+from .coordinator import ModbusCoordinator
+from .registers import REGISTERS, REG_DEFAULT_SCAN_INTERVAL
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
-    """ Set up sensor from a config entry. """
+    """ Set up sensors from a config entry. """
+    hass.data.setdefault(DOMAIN, {})
+
+    # Group registers by scan interval
+    register_groups = {}
+    for register_addr, config in REGISTERS.items():
+        scan_interval = config.get("scan_interval", REG_DEFAULT_SCAN_INTERVAL)
+        if scan_interval not in register_groups:
+            register_groups[scan_interval] = []
+        register_groups[scan_interval].append(register_addr)
+
+    # Create coordinators for each scan interval group
+    coordinators = {}
+    for scan_interval, registers in register_groups.items():
+        coordinator = ModbusCoordinator(
+            hass=hass,
+            config_entry=config_entry,
+            registers=registers,
+            scan_interval=scan_interval
+        )
+
+        # Fetch initial data
+        await coordinator.async_config_entry_first_refresh()
+        coordinators[scan_interval] = coordinator
+
+    hass.data[DOMAIN][config_entry.entry_id] = {
+        "coordinators": coordinators,
+        "register_groups": register_groups
+    }
+
+    # Set up sensors
     await hass.config_entries.async_forward_entry_setups(config_entry, [Platform.SENSOR])
+
     return True
 
 
@@ -26,48 +58,3 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     """ Unload a config entry. """
     await hass.config_entries.async_forward_entry_unload(config_entry, Platform.SENSOR)
     return True
-
-
-def get_config_value(config_entry, key, default=None):
-    """
-    Returns an option from the configuration according to the search priority:
-        options > data > default
-    """
-    if config_entry:
-        if key in config_entry.options:
-            return config_entry.options.get(key)
-        if key in config_entry.data:
-            return config_entry.data.get(key)
-    return default
-
-
-def create_modbus_client(config_data):
-    """ Returns a Modbus client instance based on the `config_data` """
-    if config_data["modbus_type"] == "tcp":
-        return AsyncModbusTcpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"]
-        )
-    elif config_data["modbus_type"] == "udp":
-        return AsyncModbusUdpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"]
-        )
-    elif config_data["modbus_type"] == "rtuovertcp":
-        return AsyncModbusTcpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"],
-            framer=FramerType.RTU
-        )
-    elif config_data["modbus_type"] == "serial":
-        return AsyncModbusSerialClient(
-            port=config_data["device"],
-            baudrate=config_data["baudrate"],
-            bytesize=config_data["bytesize"],
-            parity=config_data["parity"],
-            stopbits=config_data["stopbits"],
-            timeout=config_data["response_timeout"]
-        )
