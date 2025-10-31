@@ -5,7 +5,7 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .registers import BYTE_TYPES, REGISTERS
+from .registers import BYTE_TYPES, REGISTERS, REG_TYPE_MAPPING
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -84,13 +84,12 @@ class ModbusSensor(CoordinatorEntity, SensorEntity):
                 )
                 return None
 
+            struct_data_type = REG_TYPE_MAPPING[data_type]
             if data_type in BYTE_TYPES:  # for one byte values
                 if len(byte_data) >= 1:
-                    value = byte_data[1]
-                    if data_type == 'b':
-                        value = struct.unpack('b', bytes([value]))[0]
+                    value = struct.unpack(f'>{struct_data_type}', bytes([byte_data[1]]))[0]
             else:
-                value = struct.unpack(f'>{data_type}', byte_data)[0]
+                value = struct.unpack(f'>{struct_data_type}', byte_data)[0]
 
             # Apply scaling if needed
             if scale != 1.0:
@@ -106,7 +105,7 @@ class ModbusSensor(CoordinatorEntity, SensorEntity):
     def extra_state_attributes(self):
         """Return additional state attributes."""
         return {
-            "register_address": self.register_addr,
+            "register_address": hex(self.register_addr),
             "data_type": self.register_config.get("data_type"),
             "register_count": self.register_config.get("count", 1)
         }

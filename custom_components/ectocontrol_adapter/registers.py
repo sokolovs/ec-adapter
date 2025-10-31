@@ -1,5 +1,26 @@
-# One byte struct types
-BYTE_TYPES = ['b', 'B']
+# Register type maping
+REG_TYPE_MAPPING = {
+    # 8-bit types (single byte)
+    'uint8': 'B',
+    'int8': 'b',
+
+    # 16-bit types (single register)
+    'uint16': 'H',
+    'int16': 'h',
+
+    # 32-bit types (two registers)
+    'uint32': 'I',
+    'int32': 'i',
+    'float32': 'f',
+
+    # 64-bit types (four registers)
+    'uint64': 'Q',
+    'int64': 'q',
+    'float64': 'd',
+}
+
+# One byte types
+BYTE_TYPES = ['int8', 'uint8']
 
 # Default scan interval
 REG_DEFAULT_SCAN_INTERVAL = 15
@@ -49,21 +70,21 @@ REGISTERS = {
     REG_R_ADAPTER_STATUS: {
         "name": "Adapter Status",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 10
     },
     REG_R_ADAPTER_VERSION: {
         "name": "Adapter Version",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_ADAPTER_UPTIME: {
         "name": "Adapter Uptime",
         "count": 2,
-        "data_type": "I",
+        "data_type": "uint32",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "s",
@@ -71,7 +92,7 @@ REGISTERS = {
     REG_R_COOLANT_MIN_TEMP: {
         "name": "Minimum Coolant Temperature",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
@@ -80,7 +101,7 @@ REGISTERS = {
     REG_R_COOLANT_MAX_TEMP: {
         "name": "Maximum Coolant Temperature",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
@@ -89,7 +110,7 @@ REGISTERS = {
     REG_R_DHW_MIN_TEMP: {
         "name": "Minimum DHW Temperature",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
@@ -98,7 +119,7 @@ REGISTERS = {
     REG_R_DHW_MAX_TEMP: {
         "name": "Maximum DHW Temperature",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
@@ -107,7 +128,7 @@ REGISTERS = {
     REG_R_COOLANT_TEMP: {
         "name": "Coolant Temperature",
         "count": 1,
-        "data_type": "h",
+        "data_type": "int16",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
@@ -117,7 +138,7 @@ REGISTERS = {
     REG_R_DHW_TEMP: {
         "name": "DHW Temperature",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
@@ -127,7 +148,7 @@ REGISTERS = {
     REG_R_CURRENT_PRESSURE: {
         "name": "Current Pressure",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "bar",
@@ -137,7 +158,7 @@ REGISTERS = {
     REG_R_CURRENT_VOLUME_FLOW_RATE: {
         "name": "Current Flow Rate",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "L/min",
@@ -147,7 +168,7 @@ REGISTERS = {
     REG_R_BURNER_MODULATION: {
         "name": "Burner Modulation",
         "count": 1,
-        "data_type": "B",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 5,
         "unit_of_measurement": "%"
@@ -155,28 +176,28 @@ REGISTERS = {
     REG_R_BURNER_STATUS: {
         "name": "Burner Status",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 5
     },
     REG_R_ERROR_CODE_MAIN: {
         "name": "Main Error Code",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_ERROR_CODE_ADD: {
         "name": "Additional Error Code",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_OUTER_TEMP: {
         "name": "Outer Temperature",
         "count": 1,
-        "data_type": "b",
+        "data_type": "int8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
@@ -185,21 +206,21 @@ REGISTERS = {
     REG_R_VENDOR_CODE: {
         "name": "Vendor Code",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_MODEL_CODE: {
         "name": "Model Code",
         "count": 1,
-        "data_type": "H",
+        "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_OPENTHERM_ERRORS: {
         "name": "OpenTherm Errors",
         "count": 1,
-        "data_type": "b",
+        "data_type": "int8",
         "input_type": "holding",
         "scan_interval": 60
     },
