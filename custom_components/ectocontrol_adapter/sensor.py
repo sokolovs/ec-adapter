@@ -2,6 +2,7 @@ import logging
 import struct
 
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
@@ -47,6 +48,11 @@ class ModbusSensor(CoordinatorEntity, SensorEntity):
 
         # Initial state
         self._attr_native_value = None
+
+        # Device info
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self.coordinator.config_entry.entry_id)}
+        )
 
     @property
     def native_value(self):

@@ -4,6 +4,7 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 
 from .const import DOMAIN
 from .coordinator import ModbusCoordinator
@@ -42,6 +43,14 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         "coordinators": coordinators,
         "register_groups": register_groups
     }
+
+    device_registry = dr.async_get(hass)
+    device_registry.async_get_or_create(
+        config_entry_id=config_entry.entry_id,
+        identifiers={(DOMAIN, config_entry.entry_id)},
+        name="ectoControl Adapter",
+        manufacturer="ectoControl"
+    )
 
     # Set up sensors
     await hass.config_entries.async_forward_entry_setups(config_entry, [Platform.SENSOR])
