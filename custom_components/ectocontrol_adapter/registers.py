@@ -1,4 +1,8 @@
-# Register type maping
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass
+
+
+# Register type maping for struct python module
 REG_TYPE_MAPPING = {
     # 8-bit types (single byte)
     'uint8': 'B',
@@ -18,6 +22,10 @@ REG_TYPE_MAPPING = {
     'int64': 'q',
     'float64': 'd',
 }
+
+# Bitmasks value types
+BM_VALUE = 1
+BM_BINARY = 2
 
 # One byte types
 BYTE_TYPES = ['int8', 'uint8']
@@ -68,105 +76,125 @@ REG_R_COMMAND_REPLY = 0x0081
 # Data types for unpack via python `struct` module
 REGISTERS = {
     REG_R_ADAPTER_STATUS: {
-        "name": "Adapter Status",
+        "name": "adapter_status_raw",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 10
+        "scan_interval": 10,
+        "bitmasks": {
+            0x00FF: {
+                "type": BM_VALUE,
+                "name": "last_reboot_code"
+            },
+            0x0700: {
+                "type": BM_VALUE,
+                "name": "adapter_bus",
+                "choices": {
+                    0b00000000000: "Opentherm",
+                    0b00100000000: "eBus",
+                    0b01000000000: "Navien"
+                }
+            },
+            0x0800: {
+                "type": BM_BINARY,
+                "name": "сonnectivity",
+                "device_class": BinarySensorDeviceClass.CONNECTIVITY
+            }
+        }
     },
     REG_R_ADAPTER_VERSION: {
-        "name": "Adapter Version",
+        "name": "adapter_version",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_ADAPTER_UPTIME: {
-        "name": "Adapter Uptime",
+        "name": "adapter_uptime",
         "count": 2,
         "data_type": "uint32",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "s",
+        "unit_of_measurement": "s"
     },
     REG_R_COOLANT_MIN_TEMP: {
-        "name": "Minimum Coolant Temperature",
+        "name": "coolant_min_temp",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": "temperature"
+        "device_class": SensorDeviceClass.TEMPERATURE
     },
     REG_R_COOLANT_MAX_TEMP: {
-        "name": "Maximum Coolant Temperature",
+        "name": "coolant_max_temp",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": "temperature"
+        "device_class": SensorDeviceClass.TEMPERATURE
     },
     REG_R_DHW_MIN_TEMP: {
-        "name": "Minimum DHW Temperature",
+        "name": "dhw_min_temp",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": "temperature"
+        "device_class": SensorDeviceClass.TEMPERATURE
     },
     REG_R_DHW_MAX_TEMP: {
-        "name": "Maximum DHW Temperature",
+        "name": "dhw_max_temp",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": "temperature"
+        "device_class": SensorDeviceClass.TEMPERATURE
     },
     REG_R_COOLANT_TEMP: {
-        "name": "Coolant Temperature",
+        "name": "coolant_temp",
         "count": 1,
         "data_type": "int16",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
-        "device_class": "temperature",
+        "device_class": SensorDeviceClass.TEMPERATURE,
         "scale": 0.1
     },
     REG_R_DHW_TEMP: {
-        "name": "DHW Temperature",
+        "name": "dhw_temp",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
-        "device_class": "temperature",
+        "device_class": SensorDeviceClass.TEMPERATURE,
         "scale": 0.1
     },
     REG_R_CURRENT_PRESSURE: {
-        "name": "Current Pressure",
+        "name": "current_pressure",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "bar",
-        "device_class": "pressure",
+        "device_class": SensorDeviceClass.PRESSURE,
         "scale": 0.1
     },
     REG_R_CURRENT_VOLUME_FLOW_RATE: {
-        "name": "Current Flow Rate",
+        "name": "current_flow_rate",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "L/min",
-        "device_class": "volume_flow_rate",
+        "device_class": SensorDeviceClass.VOLUME_FLOW_RATE,
         "scale": 0.1
     },
     REG_R_BURNER_MODULATION: {
-        "name": "Burner Modulation",
+        "name": "burner_modulation",
         "count": 1,
         "data_type": "uint8",
         "input_type": "holding",
@@ -174,51 +202,68 @@ REGISTERS = {
         "unit_of_measurement": "%"
     },
     REG_R_BURNER_STATUS: {
-        "name": "Burner Status",
+        "name": "burner_status_raw",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 5
+        "scan_interval": 5,
+        "bitmasks": {
+            0b001: {
+                "type": BM_BINARY,
+                "name": "burner_status",
+                "device_class": BinarySensorDeviceClass.RUNNING
+            },
+            0b010: {
+                "type": BM_BINARY,
+                "name": "burner_heating",
+                "device_class": BinarySensorDeviceClass.RUNNING
+            },
+            0b100: {
+                "type": BM_BINARY,
+                "name": "burner_dhw",
+                "device_class": BinarySensorDeviceClass.RUNNING
+            }
+        }
     },
     REG_R_ERROR_CODE_MAIN: {
-        "name": "Main Error Code",
+        "name": "main_error_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_ERROR_CODE_ADD: {
-        "name": "Additional Error Code",
+        "name": "add_error_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 60
     },
     REG_R_OUTER_TEMP: {
-        "name": "Outer Temperature",
+        "name": "outer_temp",
         "count": 1,
         "data_type": "int8",
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
-        "device_class": "temperature"
+        "device_class": SensorDeviceClass.TEMPERATURE
     },
     REG_R_VENDOR_CODE: {
-        "name": "Vendor Code",
+        "name": "vendor_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_MODEL_CODE: {
-        "name": "Model Code",
+        "name": "model_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300
     },
     REG_R_OPENTHERM_ERRORS: {
-        "name": "OpenTherm Errors",
+        "name": "opentherm_errors",
         "count": 1,
         "data_type": "int8",
         "input_type": "holding",

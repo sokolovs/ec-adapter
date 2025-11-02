@@ -58,5 +58,37 @@
     },
     "common": {
         "not_selected": "Not selected..."
+    },
+    "entity": {
+        "sensor": {
+            "adapter_status_raw": {"name": "Adapter Status (raw)"},
+            "last_reboot_code": {"name": "Last Reboot Code"},
+            "adapter_bus": {"name": "Adapter Model"},
+            "сonnectivity": {"name": "Boiler Connectivity"},
+            "adapter_version": {"name": "Adapter Version"},
+            "adapter_uptime": {"name": "Adapter Uptime"},
+            "coolant_min_temp": {"name": "Minimum Coolant Temperature"},
+            "coolant_max_temp": {"name": "Maximum Coolant Temperature"},
+            "dhw_min_temp": {"name": "Minimum DHW Temperature"},
+            "dhw_max_temp": {"name": "Maximum DHW Temperature"},
+            "coolant_temp": {"name": "Coolant Temperature"},
+            "dhw_temp": {"name": "DHW Temperature"},
+            "current_pressure": {"name": "Current Pressure"},
+            "current_flow_rate": {"name": "Current Flow Rate"},
+            "burner_modulation": {"name": "Burner Modulation"},
+            "burner_status_raw": {"name": "Burner Status (raw)"},
+            "burner_status": {"name": "Burner Status"},
+            "burner_heating": {"name": "Heating Status"},
+            "burner_dhw": {"name": "DHW Status"},
+            "main_error_code": {"name": "Main Error Code"},
+            "add_error_code": {"name": "Additional Error Code"},
+            "outer_temp": {"name": "Outer Temperature"},
+            "vendor_code": {"name": "Vendor Code"},
+            "model_code": {"name": "Model Code"},
+            "opentherm_errors": {"name": "OpenTherm Errors"}
+        },
+        "binary_sensor": {
+
+        }
     }
 }
