@@ -64,9 +64,9 @@
             "adapter_status_raw": {"name": "Статус адаптера (raw)"},
             "last_reboot_code": {"name": "Код последней перезагрузки"},
             "adapter_bus": {"name": "Модель адаптера"},
-            "сonnectivity": {"name": "Связь с котлом"},
             "adapter_version": {"name": "Версия адаптера"},
             "adapter_uptime": {"name": "Наработка"},
+            "adapter_boot_time": {"name": "Дата и время загрузки адаптера"},
             "coolant_min_temp": {"name": "Минимальная температура теплоносителя"},
             "coolant_max_temp": {"name": "Максимальная температура теплоносителя"},
             "dhw_min_temp": {"name": "Минимальная температура ГВС"},
@@ -77,9 +77,6 @@
             "current_flow_rate": {"name": "Расход"},
             "burner_modulation": {"name": "Модуляция горелки"},
             "burner_status_raw": {"name": "Состояние горелки (raw)"},
-            "burner_status": {"name": "Cостояние горелки"},
-            "burner_heating": {"name": "Состояние отопления"},
-            "burner_dhw": {"name": "Состояние ГВС"},
             "main_error_code": {"name": "Код ошибки котла (основной)"},
             "add_error_code": {"name": "Код ошибки котла (дополнительный)"},
             "outer_temp": {"name": "Наружная температура"},
@@ -88,7 +85,10 @@
             "opentherm_errors": {"name": "Флаги ошибок OpenTherm"}
         },
         "binary_sensor": {
-
+            "сonnectivity": {"name": "Связь с котлом"},
+            "burner_status": {"name": "Cостояние горелки"},
+            "burner_heating": {"name": "Состояние отопления"},
+            "burner_dhw": {"name": "Состояние ГВС"}
         }
     }
 }

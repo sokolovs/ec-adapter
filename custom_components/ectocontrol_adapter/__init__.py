@@ -1,4 +1,4 @@
-""" ectoControl Adapter Integration. """
+""" ectoControl Adapter """
 import logging
 
 from homeassistant.config_entries import ConfigEntry
@@ -48,12 +48,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         identifiers={(DOMAIN, config_entry.entry_id)},
-        name="ectoControl Adapter",
+        name=config_entry.options.get("name") or config_entry.data.get("name"),
         manufacturer="ectoControl"
     )
 
     # Set up sensors
-    await hass.config_entries.async_forward_entry_setups(config_entry, [Platform.SENSOR])
+    await hass.config_entries.async_forward_entry_setups(config_entry, [Platform.SENSOR, Platform.BINARY_SENSOR])
 
     return True
 

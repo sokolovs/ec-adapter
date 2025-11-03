@@ -1,6 +1,8 @@
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
 
+from .converters import uptime_to_boottime
+
 
 # Register type maping for struct python module
 REG_TYPE_MAPPING = {
@@ -89,6 +91,7 @@ REGISTERS = {
             0x0700: {
                 "type": BM_VALUE,
                 "name": "adapter_bus",
+                "device_class": SensorDeviceClass.ENUM,
                 "choices": {
                     0b00000000000: "Opentherm",
                     0b00100000000: "eBus",
@@ -115,7 +118,14 @@ REGISTERS = {
         "data_type": "uint32",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "s"
+        "unit_of_measurement": "s",
+        "converters": {
+            "uptime_to_boottime": {
+                "converter": uptime_to_boottime,
+                "name": "adapter_boot_time",
+                "device_class": SensorDeviceClass.TIMESTAMP
+            }
+        }
     },
     REG_R_COOLANT_MIN_TEMP: {
         "name": "coolant_min_temp",
@@ -199,7 +209,8 @@ REGISTERS = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 5,
-        "unit_of_measurement": "%"
+        "unit_of_measurement": "%",
+        "device_class": SensorDeviceClass.POWER_FACTOR
     },
     REG_R_BURNER_STATUS: {
         "name": "burner_status_raw",
