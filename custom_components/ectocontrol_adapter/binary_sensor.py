@@ -74,3 +74,7 @@ class ModbusBinarySensor(ModbusSensorMixin, CoordinatorEntity, BinarySensorEntit
             return None
 
         return bool(raw_value & self.bitmask)
+
+    @property
+    def icon(self):
+        return self.bitmask_config.get("icon")

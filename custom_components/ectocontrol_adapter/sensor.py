@@ -135,3 +135,12 @@ class ModbusSensor(ModbusSensorMixin, CoordinatorEntity, SensorEntity):
             "data_type": self.register_config.get("data_type"),
             "register_count": self.register_config.get("count", 1)
         }
+
+    @property
+    def icon(self):
+        icon = (
+            self.bitmask_config.get("icon") or
+            self.conv_config.get("icon") or
+            self.register_config.get("icon")
+        )
+        return icon

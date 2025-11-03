@@ -89,7 +89,8 @@ REGISTERS = {
             0x00FF: {
                 "type": BM_VALUE,
                 "name": "last_reboot_code",
-                "category": EntityCategory.DIAGNOSTIC
+                "category": EntityCategory.DIAGNOSTIC,
+                "icon": "mdi:code-braces-box"
             },
             0x0700: {
                 "type": BM_VALUE,
@@ -99,7 +100,8 @@ REGISTERS = {
                     0b00000000000: "Opentherm",
                     0b00100000000: "eBus",
                     0b01000000000: "Navien"
-                }
+                },
+                "icon": "mdi:alphabetical-variant"
             },
             0x0800: {
                 "type": BM_BINARY,
@@ -109,12 +111,27 @@ REGISTERS = {
         }
     },
     REG_R_ADAPTER_VERSION: {
-        "name": "adapter_version",
+        "name": "adapter_version_raw",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 300,
-        "category": EntityCategory.DIAGNOSTIC
+        "category": EntityCategory.DIAGNOSTIC,
+        "bitmasks": {
+            0x00FF: {
+                "type": BM_VALUE,
+                "name": "adapter_sw_version",
+                "category": EntityCategory.DIAGNOSTIC,
+                "icon": "mdi:github"
+            },
+            0xFF00: {
+                "rshift": 8,
+                "type": BM_VALUE,
+                "name": "adapter_hw_version",
+                "category": EntityCategory.DIAGNOSTIC,
+                "icon": "mdi:chip"
+            }
+        }
     },
     REG_R_ADAPTER_UPTIME: {
         "name": "adapter_uptime",
@@ -139,7 +156,8 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": SensorDeviceClass.TEMPERATURE
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_COOLANT_MAX_TEMP: {
         "name": "coolant_max_temp",
@@ -148,7 +166,8 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": SensorDeviceClass.TEMPERATURE
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_DHW_MIN_TEMP: {
         "name": "dhw_min_temp",
@@ -157,7 +176,8 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": SensorDeviceClass.TEMPERATURE
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_DHW_MAX_TEMP: {
         "name": "dhw_max_temp",
@@ -166,7 +186,8 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "°C",
-        "device_class": SensorDeviceClass.TEMPERATURE
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_COOLANT_TEMP: {
         "name": "coolant_temp",
@@ -176,7 +197,8 @@ REGISTERS = {
         "scan_interval": 15,
         "unit_of_measurement": "°C",
         "device_class": SensorDeviceClass.TEMPERATURE,
-        "scale": 0.1
+        "scale": 0.1,
+        "icon": "mdi:coolant-temperature"
     },
     REG_R_DHW_TEMP: {
         "name": "dhw_temp",
@@ -186,7 +208,8 @@ REGISTERS = {
         "scan_interval": 15,
         "unit_of_measurement": "°C",
         "device_class": SensorDeviceClass.TEMPERATURE,
-        "scale": 0.1
+        "scale": 0.1,
+        "icon": "mdi:thermometer-water"
     },
     REG_R_CURRENT_PRESSURE: {
         "name": "current_pressure",
@@ -228,17 +251,20 @@ REGISTERS = {
             0b001: {
                 "type": BM_BINARY,
                 "name": "burner_status",
-                "device_class": BinarySensorDeviceClass.RUNNING
+                "device_class": BinarySensorDeviceClass.RUNNING,
+                "icon": "mdi:fire"
             },
             0b010: {
                 "type": BM_BINARY,
                 "name": "burner_heating",
-                "device_class": BinarySensorDeviceClass.RUNNING
+                "device_class": BinarySensorDeviceClass.RUNNING,
+                "icon": "mdi:heating-coil"
             },
             0b100: {
                 "type": BM_BINARY,
                 "name": "burner_dhw",
-                "device_class": BinarySensorDeviceClass.RUNNING
+                "device_class": BinarySensorDeviceClass.RUNNING,
+                "icon": "mdi:faucet"
             }
         }
     },
@@ -265,7 +291,8 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 15,
         "unit_of_measurement": "°C",
-        "device_class": SensorDeviceClass.TEMPERATURE
+        "device_class": SensorDeviceClass.TEMPERATURE,
+        "icon": "mdi:home-thermometer"
     },
     REG_R_VENDOR_CODE: {
         "name": "vendor_code",
@@ -288,6 +315,7 @@ REGISTERS = {
         "count": 1,
         "data_type": "int8",
         "input_type": "holding",
-        "scan_interval": 60
+        "scan_interval": 60,
+        "category": EntityCategory.DIAGNOSTIC
     },
 }

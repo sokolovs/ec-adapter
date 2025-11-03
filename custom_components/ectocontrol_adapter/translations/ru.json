@@ -64,7 +64,9 @@
             "adapter_status_raw": {"name": "Статус адаптера (raw)"},
             "last_reboot_code": {"name": "Код последней перезагрузки"},
             "adapter_bus": {"name": "Модель адаптера"},
-            "adapter_version": {"name": "Версия адаптера"},
+            "adapter_version_raw": {"name": "Версия адаптера (raw)"},
+            "adapter_sw_version": {"name": "Программная версия"},
+            "adapter_hw_version": {"name": "Аппаратная версия"},
             "adapter_uptime": {"name": "Наработка"},
             "adapter_boot_time": {"name": "Дата и время загрузки адаптера"},
             "coolant_min_temp": {"name": "Минимальная температура теплоносителя"},
@@ -86,7 +88,7 @@
         },
         "binary_sensor": {
             "сonnectivity": {"name": "Связь с котлом"},
-            "burner_status": {"name": "Cостояние горелки"},
+            "burner_status": {"name": "Состояние горелки"},
             "burner_heating": {"name": "Состояние отопления"},
             "burner_dhw": {"name": "Состояние ГВС"}
         }
