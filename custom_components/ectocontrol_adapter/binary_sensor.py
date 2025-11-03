@@ -52,6 +52,7 @@ class ModbusBinarySensor(ModbusSensorMixin, CoordinatorEntity, BinarySensorEntit
             f"{register_addr:#06x}_mask_{bitmask:#08x}"
         )
         self._attr_device_class = self.bitmask_config.get("device_class")
+        self._attr_entity_category = self.bitmask_config.get("category")
 
         # Device info
         self._attr_device_info = DeviceInfo(

@@ -78,16 +78,19 @@ class ModbusSensor(ModbusSensorMixin, CoordinatorEntity, SensorEntity):
                 f"{register_addr:#06x}_mask_{bitmask:#08x}"
             )
             self._attr_device_class = self.bitmask_config.get("device_class")
+            self._attr_entity_category = self.bitmask_config.get("category")
             self._attr_native_unit_of_measurement = self.bitmask_config.get("unit_of_measurement")
         elif self.conv is not None:
             self._attr_translation_key = self.conv_config.get("name")
             self._attr_unique_id = f"{self._unique_id_prefix}_{self._attr_translation_key}_{conv_name}"
             self._attr_device_class = self.conv_config.get("device_class")
+            self._attr_entity_category = self.conv_config.get("category")
             self._attr_native_unit_of_measurement = self.conv_config.get("unit_of_measurement")
         else:
             self._attr_translation_key = register_config.get("name")
             self._attr_unique_id = f"{self._unique_id_prefix}_{self._attr_translation_key}_{register_addr:#06x}"
             self._attr_device_class = register_config.get("device_class")
+            self._attr_entity_category = register_config.get("category")
             self._attr_native_unit_of_measurement = register_config.get("unit_of_measurement")
 
         # Initial state

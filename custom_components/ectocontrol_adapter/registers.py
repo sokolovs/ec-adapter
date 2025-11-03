@@ -1,5 +1,6 @@
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.helpers.entity import EntityCategory
 
 from .converters import uptime_to_boottime
 
@@ -83,10 +84,12 @@ REGISTERS = {
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 10,
+        "category": EntityCategory.DIAGNOSTIC,
         "bitmasks": {
             0x00FF: {
                 "type": BM_VALUE,
-                "name": "last_reboot_code"
+                "name": "last_reboot_code",
+                "category": EntityCategory.DIAGNOSTIC
             },
             0x0700: {
                 "type": BM_VALUE,
@@ -110,7 +113,8 @@ REGISTERS = {
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 300
+        "scan_interval": 300,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_ADAPTER_UPTIME: {
         "name": "adapter_uptime",
@@ -119,6 +123,7 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "s",
+        "category": EntityCategory.DIAGNOSTIC,
         "converters": {
             "uptime_to_boottime": {
                 "converter": uptime_to_boottime,
@@ -218,6 +223,7 @@ REGISTERS = {
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 5,
+        "category": EntityCategory.DIAGNOSTIC,
         "bitmasks": {
             0b001: {
                 "type": BM_BINARY,
@@ -241,14 +247,16 @@ REGISTERS = {
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 60
+        "scan_interval": 60,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_ERROR_CODE_ADD: {
         "name": "add_error_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 60
+        "scan_interval": 60,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_OUTER_TEMP: {
         "name": "outer_temp",
@@ -264,14 +272,16 @@ REGISTERS = {
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 300
+        "scan_interval": 300,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_MODEL_CODE: {
         "name": "model_code",
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 300
+        "scan_interval": 300,
+        "category": EntityCategory.DIAGNOSTIC
     },
     REG_R_OPENTHERM_ERRORS: {
         "name": "opentherm_errors",
