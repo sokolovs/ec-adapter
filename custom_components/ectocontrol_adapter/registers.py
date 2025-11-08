@@ -36,8 +36,23 @@ BYTE_TYPES = ['int8', 'uint8']
 # Default scan interval
 REG_DEFAULT_SCAN_INTERVAL = 15
 
-# State register offset
-REG_STATE_OFFSET = 0x30
+# Default max write retries
+REG_DEFAULT_MAX_RETRIES = 3
+
+# Default retry delay (float, seconds)
+REG_DEFAULT_RETRY_DELAY = 0.3
+
+# Default step for numbers
+REG_DEFAULT_NUMBER_STEP = 1.0
+
+# Status register offset
+REG_STATUS_OFFSET = 0x30
+
+# Status values
+REG_STATUS_ERROR_OP = -2  # boiler read/write error
+REG_STATUS_UNSUPPORTED = -1
+REG_STATUS_OK = 0
+REG_STATUS_NOT_INIT = 1
 
 # Reading registers of the ectoControl adapter
 REG_R_ADAPTER_STATUS = 0x0010
@@ -77,7 +92,7 @@ REG_W_COMMAND = 0x0080
 REG_R_COMMAND_REPLY = 0x0081
 
 # Data types for unpack via python `struct` module
-REGISTERS = {
+REGISTERS_R = {
     REG_R_ADAPTER_STATUS: {
         "name": "adapter_status_raw",
         "count": 1,
@@ -140,6 +155,7 @@ REGISTERS = {
         "input_type": "holding",
         "scan_interval": 60,
         "unit_of_measurement": "s",
+        "device_class": SensorDeviceClass.DURATION,
         "category": EntityCategory.DIAGNOSTIC,
         "converters": {
             "uptime_to_boottime": {
@@ -318,4 +334,19 @@ REGISTERS = {
         "scan_interval": 60,
         "category": EntityCategory.DIAGNOSTIC
     },
+}
+
+# Input types
+NUMBER_INPUT = "number"
+SWITCH_INPUT = "switch"
+
+REGISTERS_W = {
+    REG_W_CONNECT_TYPE: {
+        "name": "connect_type",
+        "min_value": 0,
+        "max_value": 1,
+        "initial_value": 0,
+        "step": 1,
+        "input_type": NUMBER_INPUT
+    }
 }

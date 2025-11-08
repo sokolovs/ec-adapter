@@ -2,10 +2,20 @@ import logging
 import struct
 
 from .const import DOMAIN
-from .helpers import get_config_value
 from .registers import BYTE_TYPES, REG_TYPE_MAPPING
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _unique_id_prefix(config: dict):
+    mb_type = config.get("modbus_type")
+    if mb_type == "serial":
+        device = config.get("device")
+        return f"{DOMAIN}_{mb_type}_{device}"
+    else:
+        host = config.get("host")
+        port = config.get("port")
+        return f"{DOMAIN}_{mb_type}_{host}_{port}"
 
 
 class ModbusSensorMixin:
@@ -52,13 +62,11 @@ class ModbusSensorMixin:
             _LOGGER.error("Error converting register %s data: %s", self.register_addr, e)
             return None
 
+
+class ModbusUniqIdMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     @property
     def _unique_id_prefix(self):
-        mb_type = get_config_value(self.coordinator.config_entry, "modbus_type")
-        if mb_type == "serial":
-            device = get_config_value(self.coordinator.config_entry, "device")
-            return f"{DOMAIN}_{mb_type}_{device}"
-        else:
-            host = get_config_value(self.coordinator.config_entry, "host")
-            port = get_config_value(self.coordinator.config_entry, "port")
-            return f"{DOMAIN}_{mb_type}_{host}_{port}"
+        return _unique_id_prefix(self.coordinator._config)

@@ -52,3 +52,6 @@ SERIAL_PARITIES = {
 # Stop bits
 DEFAULT_STOPBITS = 1
 SERIAL_STOPBITS = (1, 2)
+
+# Write queue wait timeout (seconds)
+W_QUEUE_TIMEOUT = 1.0

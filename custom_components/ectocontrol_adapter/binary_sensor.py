@@ -5,8 +5,8 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .mixins import ModbusSensorMixin
-from .registers import BM_BINARY, REGISTERS
+from .mixins import ModbusSensorMixin, ModbusUniqIdMixin
+from .registers import BM_BINARY
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,8 +14,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """ Set up sensors. """
     data = hass.data[DOMAIN][config_entry.entry_id]
-    coordinators = data["coordinators"]
-    register_groups = data["register_groups"]
+    coordinators = data["read_coordinators"]
+    register_groups = data["read_register_groups"]
 
     sensors = []
 
@@ -23,18 +23,17 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     for scan_interval, coordinator in coordinators.items():
         registers = register_groups[scan_interval]
 
-        for register_addr in registers:
-            register_config = REGISTERS[register_addr]
-            if "bitmasks" in register_config:
-                for mask, mask_config in register_config["bitmasks"].items():
+        for register, config in registers:
+            if "bitmasks" in config:
+                for mask, mask_config in config["bitmasks"].items():
                     if mask_config["type"] == BM_BINARY:
-                        sensor = ModbusBinarySensor(coordinator, register_addr, register_config, mask)
+                        sensor = ModbusBinarySensor(coordinator, register, config, mask)
                         sensors.append(sensor)
 
     async_add_entities(sensors, True)
 
 
-class ModbusBinarySensor(ModbusSensorMixin, CoordinatorEntity, BinarySensorEntity):
+class ModbusBinarySensor(ModbusSensorMixin, ModbusUniqIdMixin, CoordinatorEntity, BinarySensorEntity):
     """ Binary sensor for bitmasks values. """
 
     def __init__(self, coordinator, register_addr, register_config, bitmask):

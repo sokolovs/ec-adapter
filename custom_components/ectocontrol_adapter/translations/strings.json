@@ -91,6 +91,9 @@
             "burner_status": {"name": "Burner Status"},
             "burner_heating": {"name": "Heating Status"},
             "burner_dhw": {"name": "DHW Status"}
+        },
+        "number": {
+            "connect_type": {"name": "Connection type"}
         }
     }
 }

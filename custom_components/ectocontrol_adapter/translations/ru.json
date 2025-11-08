@@ -91,6 +91,9 @@
             "burner_status": {"name": "Состояние горелки"},
             "burner_heating": {"name": "Состояние отопления"},
             "burner_dhw": {"name": "Состояние ГВС"}
+        },
+        "number": {
+            "connect_type": {"name": "Тип подключения"}
         }
     }
 }
