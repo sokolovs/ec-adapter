@@ -139,14 +139,14 @@ class ModbusWriteCoordinator:
         while self._is_running:
             try:
                 try:
-                    operation_id, register, value, future = await asyncio.wait_for(
+                    operation_id, register, values, future = await asyncio.wait_for(
                         self._write_queue.get(), timeout=W_QUEUE_TIMEOUT
                     )
                 except asyncio.TimeoutError:
                     continue
 
                 try:
-                    result = await self._execute_write_operation(register, value)
+                    result = await self._execute_write_operation(register, values)
                     if not future.done():
                         future.set_result(result)
                 except Exception as e:
@@ -161,14 +161,14 @@ class ModbusWriteCoordinator:
             except Exception as e:
                 _LOGGER.error("Unexpected error in write queue processing: %s", e)
 
-    async def _execute_write_operation(self, register: int, value: list) -> bool:
+    async def _execute_write_operation(self, register: int, values: list[int]) -> bool:
         """ Performs a write operation with status checking """
         client = await self._get_modbus_client()
 
         try:
             await client.write_registers(
                 address=register,
-                values=value,
+                values=values,
                 device_id=self._config["slave"])
 
             # Check write status
@@ -211,15 +211,15 @@ class ModbusWriteCoordinator:
 
         return False
 
-    async def submit_write_operation(self, register, value) -> bool:
+    async def submit_write_operation(self, register, values: list[int]) -> bool:
         """ Adds a write operation to the queue and waits for the result """
         if not self._is_running:
             raise RuntimeError("Write manager is not running")
 
-        operation_id = f"{register}_{value}"
+        operation_id = f"{register}_{values}"
         future = asyncio.Future()
 
-        await self._write_queue.put((operation_id, register, value, future))
+        await self._write_queue.put((operation_id, register, values, future))
 
         # Wait for the result
         return await future

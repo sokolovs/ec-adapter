@@ -54,10 +54,10 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity):
         """ Set value via write coordinator """
         intval = int(value)
         success = await self.coordinator.submit_write_operation(
-            register=self.register_addr, value=[intval])
+            register=self.register_addr, values=[intval])
 
         if success:
-            self._attr_native_value = value
+            self._attr_native_value = intval
             self.async_write_ha_state()
             _LOGGER.info("Successfully set %s to %s", self._attr_translation_key, intval)
         else:
