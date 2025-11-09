@@ -53,5 +53,5 @@ SERIAL_PARITIES = {
 DEFAULT_STOPBITS = 1
 SERIAL_STOPBITS = (1, 2)
 
-# Write queue wait timeout (seconds)
-W_QUEUE_TIMEOUT = 1.0
+# Modbus Queue wait timeout (seconds)
+QUEUE_TIMEOUT = 1.0

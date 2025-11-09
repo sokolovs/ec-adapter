@@ -7,7 +7,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 
 from .const import DOMAIN
-from .coordinator import ModbusReadCoordinator, ModbusWriteCoordinator
+from .coordinator import ModbusDataUpdateCoordinator
+from .master import ModbusMasterCoordinator
 from .registers import REGISTERS_R, REGISTERS_W, REG_DEFAULT_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
@@ -26,40 +27,41 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         manufacturer="ectoControl"
     )
 
-    # Create and start write coordinator
-    write_coordinator = ModbusWriteCoordinator(
+    # Create and start Modbus master coordinator
+    master_coordinator = ModbusMasterCoordinator(
         hass=hass,
         config_entry=config_entry
     )
-    await write_coordinator.async_start()
+    await master_coordinator.async_start()
 
     # Group registers by scan interval
-    read_register_groups = {}
+    update_register_groups = {}
     for register_addr, config in REGISTERS_R.items():
         scan_interval = config.get("scan_interval", REG_DEFAULT_SCAN_INTERVAL)
-        if scan_interval not in read_register_groups:
-            read_register_groups[scan_interval] = []
-        read_register_groups[scan_interval].append((register_addr, config))
+        if scan_interval not in update_register_groups:
+            update_register_groups[scan_interval] = []
+        update_register_groups[scan_interval].append((register_addr, config))
 
     # Create coordinators for each scan interval group
-    read_coordinators = {}
-    for scan_interval, registers in read_register_groups.items():
-        read_coordinator = ModbusReadCoordinator(
+    update_coordinators = {}
+    for scan_interval, registers in update_register_groups.items():
+        update_coordinator = ModbusDataUpdateCoordinator(
             hass=hass,
             config_entry=config_entry,
+            master=master_coordinator,
             registers=registers,
             scan_interval=scan_interval
         )
 
         # Fetch initial data
-        await read_coordinator.async_config_entry_first_refresh()
-        read_coordinators[scan_interval] = read_coordinator
+        await update_coordinator.async_config_entry_first_refresh()
+        update_coordinators[scan_interval] = update_coordinator
 
     hass.data[DOMAIN][config_entry.entry_id] = {
+        "master_coordinator": master_coordinator,
         "device_id": device.id,
-        "read_coordinators": read_coordinators,
-        "read_register_groups": read_register_groups,
-        "write_coordinator": write_coordinator,
+        "update_coordinators": update_coordinators,
+        "update_register_groups": update_register_groups,
         "write_registers": REGISTERS_W
     }
 
@@ -79,6 +81,8 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     """ Unload a config entry. """
     await hass.config_entries.async_forward_entry_unload(
         config_entry, [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER])
-    write_coordinator = hass.data[DOMAIN][config_entry.entry_id]["write_coordinator"]
-    await write_coordinator.async_stop()
+
+    master_coordinator = hass.data[DOMAIN][config_entry.entry_id]["master_coordinator"]
+    await master_coordinator.async_stop()
+
     return True

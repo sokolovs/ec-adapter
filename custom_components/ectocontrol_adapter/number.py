@@ -13,14 +13,14 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """ Set up number entities  """
     data = hass.data[DOMAIN][config_entry.entry_id]
-    write_coordinator = data["write_coordinator"]
+    master_coordinator = data["master_coordinator"]
     write_registers = data["write_registers"]
 
     entities = []
 
     for register, config in write_registers.items():
         if config.get("input_type") == NUMBER_INPUT:
-            entities.append(ModbusNumber(hass, write_coordinator, register, config))
+            entities.append(ModbusNumber(hass, master_coordinator, register, config))
 
     async_add_entities(entities)
 
@@ -28,9 +28,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class ModbusNumber(ModbusUniqIdMixin, NumberEntity):
     """ Modbus Number entity """
 
-    def __init__(self, hass, write_coordinator, register_addr, register_config):
+    def __init__(self, hass, master_coordinator, register_addr, register_config):
         self._hass = hass
-        self.coordinator = write_coordinator
+        self.coordinator = master_coordinator
         self.register_addr = register_addr
         self.register_config = register_config
 
@@ -53,8 +53,8 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity):
     async def async_set_native_value(self, value: float) -> None:
         """ Set value via write coordinator """
         intval = int(value)
-        success = await self.coordinator.submit_write_operation(
-            register=self.register_addr, values=[intval])
+        success = await self.coordinator.write_registers(
+            address=self.register_addr, values=[intval])
 
         if success:
             self._attr_native_value = intval

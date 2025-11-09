@@ -14,8 +14,8 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """ Set up sensors. """
     data = hass.data[DOMAIN][config_entry.entry_id]
-    coordinators = data["read_coordinators"]
-    register_groups = data["read_register_groups"]
+    coordinators = data["update_coordinators"]
+    register_groups = data["update_register_groups"]
 
     sensors = []
 
