@@ -84,16 +84,32 @@
             "outer_temp": {"name": "Outer Temperature"},
             "vendor_code": {"name": "Vendor Code"},
             "model_code": {"name": "Model Code"},
-            "opentherm_errors": {"name": "OpenTherm Errors"}
+            "opentherm_errors": {"name": "OpenTherm Errors (raw)"}
         },
         "binary_sensor": {
             "сonnectivity": {"name": "Boiler Connectivity"},
             "burner_status": {"name": "Burner Status"},
             "burner_heating": {"name": "Heating Status"},
-            "burner_dhw": {"name": "DHW Status"}
+            "burner_dhw": {"name": "DHW Status"},
+            "opentherm_maintenance_required": {"name": "[OpenTherm] Maintenance required"},
+            "opentherm_boiler_blocked": {"name": "[OpenTherm] Boiler is blocked"},
+            "opentherm_low_pressure": {"name": "[OpenTherm] Low pressure"},
+            "opentherm_ignition_error": {"name": "[OpenTherm] Ignition error"},
+            "opentherm_low_air_pressure": {"name": "[OpenTherm] Low Air pressure"},
+            "opentherm_coolant_overheating": {"name": "[OpenTherm] Coolant overheating"}
         },
         "number": {
-            "connect_type": {"name": "Connection type"}
+            "coolant_temp": {"name": "Coolant Temperature"},
+            "coolant_emergency_temp": {"name": "Coolant Emergency Temperature"},
+            "coolant_min_temp": {"name": "Min. Coolant Temperature"},
+            "coolant_max_temp": {"name": "Max. Coolant temperature"},
+            "dhw_min_temp": {"name": "Min. DHW temperature"},
+            "dhw_max_temp": {"name": "Max. DHW temperature"},
+            "dhw_temp": {"name": "DHW temperature"},
+            "burner_modulation": {"name": "Burner modulation"}
+        },
+        "switch": {
+            "connect_type": {"name": "Switch to panel"}
         }
     }
 }

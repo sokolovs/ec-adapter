@@ -84,16 +84,32 @@
             "outer_temp": {"name": "Наружная температура"},
             "vendor_code": {"name": "Код производителя котла"},
             "model_code": {"name": "Код модели котла"},
-            "opentherm_errors": {"name": "Флаги ошибок OpenTherm"}
+            "opentherm_errors": {"name": "Флаги ошибок OpenTherm (raw)"}
         },
         "binary_sensor": {
             "сonnectivity": {"name": "Связь с котлом"},
             "burner_status": {"name": "Состояние горелки"},
             "burner_heating": {"name": "Состояние отопления"},
-            "burner_dhw": {"name": "Состояние ГВС"}
+            "burner_dhw": {"name": "Состояние ГВС"},
+            "opentherm_maintenance_required": {"name": "[OpenTherm] Необходимо обслуживание"},
+            "opentherm_boiler_blocked": {"name": "[OpenTherm] Котел заблокирован"},
+            "opentherm_low_pressure": {"name": "[OpenTherm] Низкое давление в отопительном контуре"},
+            "opentherm_ignition_error": {"name": "[OpenTherm] Ошибка розжига"},
+            "opentherm_low_air_pressure": {"name": "[OpenTherm] Низкое давление воздуха"},
+            "opentherm_coolant_overheating": {"name": "[OpenTherm] Перегрев теплоносителя в контуре"}
         },
         "number": {
-            "connect_type": {"name": "Тип подключения"}
+            "coolant_temp": {"name": "Целевая Т. теплоносителя"},
+            "coolant_emergency_temp": {"name": "Аварийная Т. теплоносителя"},
+            "coolant_min_temp": {"name": "Мин. Т. теплоносителя"},
+            "coolant_max_temp": {"name": "Макс. Т. теплоносителя"},
+            "dhw_min_temp": {"name": "Мин. Т. ГВС"},
+            "dhw_max_temp": {"name": "Макс. Т. ГВС"},
+            "dhw_temp": {"name": "Целевая Т. ГВС"},
+            "burner_modulation": {"name": "Модуляция горелки"}
+        },
+        "switch": {
+            "connect_type": {"name": "Переключить на панель"}
         }
     }
 }

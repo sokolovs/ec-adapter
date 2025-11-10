@@ -1,5 +1,7 @@
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.components.switch import SwitchDeviceClass
 from homeassistant.helpers.entity import EntityCategory
 
 from .converters import uptime_to_boottime
@@ -329,11 +331,49 @@ REGISTERS_R = {
     REG_R_OPENTHERM_ERRORS: {
         "name": "opentherm_errors",
         "count": 1,
-        "data_type": "int8",
+        "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
-        "category": EntityCategory.DIAGNOSTIC
-    },
+        "category": EntityCategory.DIAGNOSTIC,
+        "bitmasks": {
+            0x0001: {
+                "type": BM_BINARY,
+                "name": "opentherm_maintenance_required",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            },
+            0x0002: {
+                "type": BM_BINARY,
+                "name": "opentherm_boiler_blocked",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            },
+            0x0004: {
+                "type": BM_BINARY,
+                "name": "opentherm_low_pressure",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            },
+            0x0008: {
+                "type": BM_BINARY,
+                "name": "opentherm_ignition_error",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            },
+            0x0010: {
+                "type": BM_BINARY,
+                "name": "opentherm_low_air_pressure",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            },
+            0x0020: {
+                "type": BM_BINARY,
+                "name": "opentherm_coolant_overheating",
+                "device_class": BinarySensorDeviceClass.PROBLEM,
+                "category": EntityCategory.DIAGNOSTIC
+            }
+        }
+    }
 }
 
 # Input types
@@ -343,10 +383,104 @@ SWITCH_INPUT = "switch"
 REGISTERS_W = {
     REG_W_CONNECT_TYPE: {
         "name": "connect_type",
+        "on_value": 1,
+        "off_value": 0,
+        "input_type": SWITCH_INPUT,
+        "icon": "mdi:alarm-panel-outline",
+        "device_class": SwitchDeviceClass.SWITCH
+    },
+    REG_W_COOLANT_TEMP: {
+        "name": "coolant_temp",
         "min_value": 0,
-        "max_value": 1,
+        "max_value": 100,
+        "initial_value": 40,
+        "step": 1,
+        "scale": 10,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:coolant-temperature",
+        "device_class": NumberDeviceClass.TEMPERATURE
+    },
+    REG_W_COOLANT_EMERGENCY_TEMP: {
+        "name": "coolant_emergency_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 40,
+        "step": 1,
+        "scale": 10,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-alert",
+        "device_class": NumberDeviceClass.TEMPERATURE
+    },
+    REG_W_COOLANT_MIN_TEMP: {
+        "name": "coolant_min_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 40,
+        "step": 1,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-minus",
+        "device_class": NumberDeviceClass.TEMPERATURE,
+        "category": EntityCategory.CONFIG
+    },
+    REG_W_COOLANT_MAX_TEMP: {
+        "name": "coolant_max_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 80,
+        "step": 1,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-plus",
+        "device_class": NumberDeviceClass.TEMPERATURE,
+        "category": EntityCategory.CONFIG
+    },
+    REG_W_DHW_MIN_TEMP: {
+        "name": "dhw_min_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 40,
+        "step": 1,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-minus",
+        "device_class": NumberDeviceClass.TEMPERATURE,
+        "category": EntityCategory.CONFIG
+    },
+    REG_W_DHW_MAX_TEMP: {
+        "name": "dhw_max_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 55,
+        "step": 1,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-plus",
+        "device_class": NumberDeviceClass.TEMPERATURE,
+        "category": EntityCategory.CONFIG
+    },
+    REG_W_DHW_TEMP: {
+        "name": "dhw_temp",
+        "min_value": 0,
+        "max_value": 100,
+        "initial_value": 40,
+        "step": 1,
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "°C",
+        "icon": "mdi:thermometer-water",
+        "device_class": NumberDeviceClass.TEMPERATURE
+    },
+    REG_W_BURNER_MODULATION: {
+        "name": "burner_modulation",
+        "min_value": 0,
+        "max_value": 100,
         "initial_value": 0,
         "step": 1,
-        "input_type": NUMBER_INPUT
-    }
+        "input_type": NUMBER_INPUT,
+        "unit_of_measurement": "%",
+        "icon": "mdi:gas-burner",
+        "device_class": NumberDeviceClass.POWER_FACTOR
+    },
 }

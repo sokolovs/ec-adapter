@@ -12,6 +12,7 @@ from .master import ModbusMasterCoordinator
 from .registers import REGISTERS_R, REGISTERS_W, REG_DEFAULT_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
+_PLATFORMS = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SENSOR, Platform.SWITCH]
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
@@ -66,8 +67,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     }
 
     # Set up sensors
-    await hass.config_entries.async_forward_entry_setups(
-        config_entry, [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER])
+    await hass.config_entries.async_forward_entry_setups(config_entry, _PLATFORMS)
 
     return True
 
@@ -79,8 +79,7 @@ async def async_update_options(hass: HomeAssistant, config_entry: ConfigEntry) -
 
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """ Unload a config entry. """
-    await hass.config_entries.async_forward_entry_unload(
-        config_entry, [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER])
+    await hass.config_entries.async_forward_entry_unload(config_entry, _PLATFORMS)
 
     master_coordinator = hass.data[DOMAIN][config_entry.entry_id]["master_coordinator"]
     await master_coordinator.async_stop()
