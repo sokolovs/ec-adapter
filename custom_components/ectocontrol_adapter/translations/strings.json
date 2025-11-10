@@ -110,6 +110,23 @@
         },
         "switch": {
             "connect_type": {"name": "Switch to panel"}
+        },
+        "select": {
+            "connect_type": {
+                "name": "Connection type",
+                "state": {
+                    "adapter": "Adapter",
+                    "boiler_panel": "Boiler Panel"
+                }
+            },
+            "work_mode": {
+                "name": "Operating Mode",
+                "state": {
+                    "disabled": "Disabled",
+                    "dwh_only": "DWH only",
+                    "heating_dwh": "Heating + DWH"
+                }
+            }
         }
     }
 }

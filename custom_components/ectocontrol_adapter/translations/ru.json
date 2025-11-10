@@ -110,6 +110,23 @@
         },
         "switch": {
             "connect_type": {"name": "Переключить на панель"}
+        },
+        "select": {
+            "connect_type": {
+                "name": "Тип подключения",
+                "state": {
+                    "adapter": "Адаптер",
+                    "boiler_panel": "Панель котла"
+                }
+            },
+            "work_mode": {
+                "name": "Режим работы",
+                "state": {
+                    "disabled": "Выключен",
+                    "dwh_only": "Только ГВС",
+                    "heating_dwh": "Отопление + ГВС"
+                }
+            }
         }
     }
 }

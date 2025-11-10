@@ -379,15 +379,29 @@ REGISTERS_R = {
 # Input types
 NUMBER_INPUT = "number"
 SWITCH_INPUT = "switch"
+SELECT_INPUT = "select"
 
 REGISTERS_W = {
+    # Switch
+    # REG_W_CONNECT_TYPE: {
+    #     "name": "connect_type",
+    #     "on_value": 1,
+    #     "off_value": 0,
+    #     "input_type": SWITCH_INPUT,
+    #     "icon": "mdi:alarm-panel-outline",
+    #     "device_class": SwitchDeviceClass.SWITCH
+    # },
+    # or Select
     REG_W_CONNECT_TYPE: {
         "name": "connect_type",
-        "on_value": 1,
-        "off_value": 0,
-        "input_type": SWITCH_INPUT,
+        "input_type": SELECT_INPUT,
         "icon": "mdi:alarm-panel-outline",
-        "device_class": SwitchDeviceClass.SWITCH
+        "initial_value": "adapter",
+        "choices": {
+            "adapter": 0,
+            "boiler_panel": 1
+        },
+        "category": EntityCategory.CONFIG
     },
     REG_W_COOLANT_TEMP: {
         "name": "coolant_temp",
@@ -483,4 +497,15 @@ REGISTERS_W = {
         "icon": "mdi:gas-burner",
         "device_class": NumberDeviceClass.POWER_FACTOR
     },
+    REG_W_MODE: {
+        "name": "work_mode",
+        "input_type": SELECT_INPUT,
+        "icon": "mdi:application-cog",
+        "initial_value": "disabled",
+        "choices": {
+            "disabled": 0b000,
+            "dwh_only": 0b010,
+            "heating_dwh": 0b011
+        },
+    }
 }

@@ -12,7 +12,14 @@ from .master import ModbusMasterCoordinator
 from .registers import REGISTERS_R, REGISTERS_W, REG_DEFAULT_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
-_PLATFORMS = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SENSOR, Platform.SWITCH]
+
+_PLATFORMS = [
+    Platform.BINARY_SENSOR,
+    Platform.NUMBER,
+    Platform.SELECT,
+    Platform.SENSOR,
+    Platform.SWITCH
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
