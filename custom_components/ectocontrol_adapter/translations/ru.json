@@ -127,6 +127,10 @@
                     "heating_dwh": "Отопление + ГВС"
                 }
             }
+        },
+        "button": {
+            "command_reboot": {"name": "Перезагрузить адаптер"},
+            "command_reset_boiler_errors": {"name": "Сбросить ошибки котла"}
         }
     }
 }

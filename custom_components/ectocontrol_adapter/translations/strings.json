@@ -127,6 +127,10 @@
                     "heating_dwh": "Heating + DWH"
                 }
             }
+        },
+        "button": {
+            "command_reboot": {"name": "Adapter Reboot"},
+            "command_reset_boiler_errors": {"name": "Reset Boiler Errors"}
         }
     }
 }

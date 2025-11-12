@@ -1,4 +1,5 @@
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.button import ButtonDeviceClass
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.switch import SwitchDeviceClass
@@ -377,6 +378,7 @@ REGISTERS_R = {
 }
 
 # Input types
+BUTTON_INPUT = "button"
 NUMBER_INPUT = "number"
 SWITCH_INPUT = "switch"
 SELECT_INPUT = "select"
@@ -506,6 +508,25 @@ REGISTERS_W = {
             "disabled": 0b000,
             "dwh_only": 0b010,
             "heating_dwh": 0b011
-        },
+        }
+    },
+    REG_W_COMMAND: {
+        "name": "command",
+        "input_type": BUTTON_INPUT,
+        "status_register": REG_R_COMMAND_REPLY,
+        "buttons": [
+            {
+                "name": "reboot",
+                "value": 2,
+                "icon": "mdi:reload",
+                "device_class": ButtonDeviceClass.RESTART,
+            },
+            {
+                "name": "reset_boiler_errors",
+                "value": 3,
+                "icon": "mdi:lock-reset",
+                "device_class": ButtonDeviceClass.RESTART,
+            }
+        ]
     }
 }

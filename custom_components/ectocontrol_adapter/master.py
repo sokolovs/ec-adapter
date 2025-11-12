@@ -116,8 +116,13 @@ class ModbusMasterCoordinator:
                     device_id=self._config["slave"]
                 )
 
+                status_register = (
+                    data["status_register"] or
+                    data["address"] + REG_STATUS_OFFSET
+                )
+
                 success = await self._verify_write_status(
-                    data["address"] + REG_STATUS_OFFSET,
+                    status_register,
                     data.get("success_status", REG_STATUS_OK),
                     data.get("max_retries", REG_DEFAULT_MAX_RETRIES),
                     data.get("retry_delay", REG_DEFAULT_RETRY_DELAY)
@@ -159,9 +164,9 @@ class ModbusMasterCoordinator:
         return await self._submit_operation(
             "read_holding_registers", {"address": address, "count": count})
 
-    async def write_registers(self, address: int, values: List[int]) -> bool:
+    async def write_registers(self, address: int, values: List[int], status_register=None) -> bool:
         return await self._submit_operation(
-            "write_registers", {"address": address, "values": values})
+            "write_registers", {"address": address, "values": values, "status_register": status_register})
 
     async def _submit_operation(self, op: str, data: Dict[str, Any]):
         """ Adds a operation to the queue and waits for the result """

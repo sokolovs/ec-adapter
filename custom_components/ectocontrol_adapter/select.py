@@ -69,7 +69,7 @@ class ModbusSelect(ModbusUniqIdMixin, SelectEntity, RestoreEntity):
             self.async_write_ha_state()
             _LOGGER.info(f"Successfully set '{self._attr_translation_key}' to '{option}'")
         else:
-            raise Exception(f"Failed to write value {wrval} to register={self.register_addr:#06x}")
+            raise Exception(f"Failed to write value '{wrval}' to register={self.register_addr:#06x}")
 
     @property
     def assumed_state(self) -> bool:
