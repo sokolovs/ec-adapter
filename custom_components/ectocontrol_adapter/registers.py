@@ -2,7 +2,7 @@ from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.button import ButtonDeviceClass
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
-from homeassistant.components.switch import SwitchDeviceClass
+from homeassistant.components.switch import SwitchDeviceClass  # noqa: F401
 from homeassistant.helpers.entity import EntityCategory
 
 from .converters import uptime_to_boottime

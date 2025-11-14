@@ -46,10 +46,11 @@ class ModbusDataUpdateCoordinator(DataUpdateCoordinator):
                 result = await self._master.read_holding_registers(
                     address=register,
                     count=REGISTERS_R[register]["count"])
-                if result.isError():
+                if result is None or result.isError():
                     _LOGGER.error("Modbus read error")
                     data[register] = None
-                data[register] = result.registers
+                else:
+                    data[register] = result.registers
         except Exception as e:
             _LOGGER.error(f"Modbus exception while read: {e}")
         return data

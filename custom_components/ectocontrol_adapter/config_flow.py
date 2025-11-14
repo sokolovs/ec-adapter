@@ -102,20 +102,21 @@ async def check_user_input(user_input):
             errors["base"] = "ec_modbus_connect_error"
             _LOGGER.error("Failed to connect to Modbus device")
         else:
+            _LOGGER.info("Successfully connected to Modbus device")
+
             adapter_uptime = await client.read_holding_registers(
                 address=REG_R_ADAPTER_UPTIME,
                 count=REGISTERS_R[REG_R_ADAPTER_UPTIME]["count"],
                 device_id=user_input["slave"]
             )
 
-            if adapter_uptime.isError():
+            if adapter_uptime is None or adapter_uptime.isError():
                 errors["base"] = "ec_uptime_reading_error"
                 _LOGGER.error(
                     "Modbus error reading uptime from adapter: %s", adapter_uptime)
             else:
                 _LOGGER.info("Modbus reading uptime value: %s" % adapter_uptime.registers)
 
-        _LOGGER.info("Successfully connected to Modbus device")
     except Exception as e:
         errors["base"] = "ec_modbus_connect_error"
         _LOGGER.error("Failed to connect to Modbus device: %s" % e)

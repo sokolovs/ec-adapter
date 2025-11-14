@@ -100,12 +100,12 @@ class ModbusSensor(ModbusSensorMixin, ModbusUniqIdMixin, CoordinatorEntity, Sens
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if self.coordinator.data is None:
-            return None
+        if not self.coordinator.data:
+            return
 
         raw_data = self.coordinator.data.get(self.register_addr)
         if raw_data is None:
-            return None
+            return
 
         raw_value = self._get_raw_value(raw_data)
         if raw_value is None:

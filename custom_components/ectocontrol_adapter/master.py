@@ -59,8 +59,8 @@ class ModbusMasterCoordinator:
             result = await self._client.connect()
             if not result:
                 _LOGGER.error("Failed to connect to Modbus device")
-        except Exception as ex:
-            _LOGGER.error("Error connecting to Modbus: %s", ex)
+        except Exception as e:
+            _LOGGER.error(f"Error connecting to Modbus: {e}")
 
     async def _get_modbus_client(self):
         """ Rreturn connected Modbus client """
@@ -96,7 +96,7 @@ class ModbusMasterCoordinator:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                _LOGGER.error("Unexpected error in operation processor: %s", e)
+                _LOGGER.error(f"Unexpected error in operation processor: {e}")
 
     async def _execute_operation(self, op: str, data: Dict[str, Any]):
         """ Backend for execute same operation """
@@ -132,7 +132,7 @@ class ModbusMasterCoordinator:
                 raise ValueError(f"Unknown operation type: {op}")
 
         except Exception as e:
-            _LOGGER.error("Error executing '%s' operation: %s", op, e)
+            _LOGGER.error(f"Error executing '{op}' operation: {e}")
 
     async def _verify_write_status(
             self,
@@ -148,10 +148,11 @@ class ModbusMasterCoordinator:
                 result = await client.read_holding_registers(
                     address=status_register,
                     device_id=self._config["slave"])
-                if result.isError():
-                    _LOGGER.error(f"Modbus read status register={status_register:#06x} error")
-                elif len(result.registers) and result.registers[0] == success_status:
-                    return True
+                if result is not None:
+                    if result.isError():
+                        _LOGGER.error(f"Modbus read status register={status_register:#06x} error")
+                    elif len(result.registers) and result.registers[0] == success_status:
+                        return True
             except Exception as e:
                 _LOGGER.error(f"Attempt {attempt + 1} failed to read status register: {e}")
 
