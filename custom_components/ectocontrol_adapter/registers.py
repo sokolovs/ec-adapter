@@ -101,7 +101,7 @@ REGISTERS_R = {
         "count": 1,
         "data_type": "uint16",
         "input_type": "holding",
-        "scan_interval": 10,
+        "scan_interval": 5,
         "category": EntityCategory.DIAGNOSTIC,
         "bitmasks": {
             0x00FF: {
@@ -415,7 +415,8 @@ REGISTERS_W = {
         "input_type": NUMBER_INPUT,
         "unit_of_measurement": "°C",
         "icon": "mdi:coolant-temperature",
-        "device_class": NumberDeviceClass.TEMPERATURE
+        "device_class": NumberDeviceClass.TEMPERATURE,
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
     },
     REG_W_COOLANT_EMERGENCY_TEMP: {
         "name": "coolant_emergency_temp",
@@ -439,7 +440,8 @@ REGISTERS_W = {
         "unit_of_measurement": "°C",
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
-        "category": EntityCategory.CONFIG
+        "category": EntityCategory.CONFIG,
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
     },
     REG_W_COOLANT_MAX_TEMP: {
         "name": "coolant_max_temp",
@@ -451,7 +453,8 @@ REGISTERS_W = {
         "unit_of_measurement": "°C",
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
-        "category": EntityCategory.CONFIG
+        "category": EntityCategory.CONFIG,
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
     },
     REG_W_DHW_MIN_TEMP: {
         "name": "dhw_min_temp",
@@ -463,7 +466,8 @@ REGISTERS_W = {
         "unit_of_measurement": "°C",
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
-        "category": EntityCategory.CONFIG
+        "category": EntityCategory.CONFIG,
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
     },
     REG_W_DHW_MAX_TEMP: {
         "name": "dhw_max_temp",
@@ -475,7 +479,8 @@ REGISTERS_W = {
         "unit_of_measurement": "°C",
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
-        "category": EntityCategory.CONFIG
+        "category": EntityCategory.CONFIG,
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
     },
     REG_W_DHW_TEMP: {
         "name": "dhw_temp",

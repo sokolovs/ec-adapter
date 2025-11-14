@@ -46,10 +46,7 @@ class ModbusBinarySensor(ModbusSensorMixin, ModbusUniqIdMixin, CoordinatorEntity
         # Entity attributes
         self._attr_has_entity_name = True
         self._attr_translation_key = self.bitmask_config.get("name")
-        self._attr_unique_id = (
-            f"{self._unique_id_prefix}_{self._attr_translation_key}_"
-            f"{register_addr:#06x}_mask_{bitmask:#08x}"
-        )
+        self._attr_unique_id = f"{self._unique_id_prefix}_{self._attr_translation_key}_{register_addr:#06x}"
         self._attr_device_class = self.bitmask_config.get("device_class")
         self._attr_entity_category = self.bitmask_config.get("category")
 
