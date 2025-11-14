@@ -1,7 +1,7 @@
 import logging
 
 from homeassistant.components.number import NumberEntity, NumberMode
-from homeassistant.const import EVENT_COMPONENT_LOADED, Platform
+from homeassistant.const import Platform
 from homeassistant.helpers import entity_registry
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.event import async_call_later, async_track_state_change_event
@@ -69,21 +69,24 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity, RestoreEntity):
         await super().async_added_to_hass()
         last_state = await self.async_get_last_state()
 
-        # Restore last state
+        # Restore last state and write to register (optional)
         if last_state is not None:
             self._attr_native_value = int(last_state.state)
 
-        # Subscribe to binary sensor updates and component loaded event
+            # Subscribe to binary sensor updates and component loaded event
+            if self.write_after_connected is not None:
+                # Write register immediatly
+                _LOGGER.debug(
+                    f"'{self._attr_translation_key}' added to HA. "
+                    f"Write last state to register={self.register_addr:#06x}")
+                await self.async_set_native_value(value=float(last_state.state))
+
+        # Subscribe to adapter connected event
         if self.write_after_connected is not None:
             async_call_later(
                 hass=self.hass,
                 delay=_SUBSCRIBE_ATTEMPTS_DELAY,
                 action=lambda _: self._subscribe_with_retry()
-            )
-
-            self.hass.bus.async_listen_once(
-                EVENT_COMPONENT_LOADED,
-                self._handle_component_loaded,
             )
 
     async def async_set_native_value(self, value: float) -> None:
@@ -113,8 +116,8 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity, RestoreEntity):
         if entity_id:
             self.async_on_remove(
                 async_track_state_change_event(
-                    self.hass, entity_id, self._handle_write_after_turn_on))
-            _LOGGER.info(f"Subscribe to '{entity_id}' for '{self._attr_translation_key}': SUCCESS")
+                    self.hass, entity_id, self._handle_write_after_connected))
+            _LOGGER.debug(f"Subscribe to '{entity_id}' for '{self._attr_translation_key}': SUCCESS")
         else:
             if attempt < max_attempts:
                 _LOGGER.debug(
@@ -130,7 +133,7 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity, RestoreEntity):
                     f"Unable to find entity '{sensor_unique_id}' "
                     f"to subscribe to after '{max_attempts}' attempts")
 
-    async def _handle_write_after_turn_on(self, event):
+    async def _handle_write_after_connected(self, event):
         """ Processing updates to monitored binary sensor """
         _LOGGER.debug(
             f"Sensor state change detected: '{event.data.get('entity_id')}', "
@@ -143,15 +146,6 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity, RestoreEntity):
         last_state = await self.async_get_last_state()
         if last_state is not None:
             await self.async_set_native_value(value=float(last_state.state))
-
-    async def _handle_component_loaded(self, event):
-        if event.data["component"] == DOMAIN:
-            _LOGGER.debug(
-                f"Component loaded, Modbus register write is required for '{self._attr_translation_key}'")
-
-            last_state = await self.async_get_last_state()
-            if last_state is not None:
-                await self.async_set_native_value(value=float(last_state.state))
 
     @property
     def assumed_state(self) -> bool:
