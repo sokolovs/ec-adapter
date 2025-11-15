@@ -1,4 +1,4 @@
-# RU: 🔥 Интеграция ectoControl для Home Assistant
+# RU: 🔥 Интеграция адаптера цифровой шины ectoControl для Home Assistant
 
 Интеграция предназначена для подключения адаптеров **ectoControl**, обеспечивающих управление газовыми и электрическими котлами по различным коммуникационным шинам. В зависимости от модели адаптера поддерживаются такие протоколы, как **eBUS**, **OpenTherm**, **Navien** и другие.
 
@@ -23,7 +23,7 @@
 
 ---
 
-# EN: 🔥 ectoControl Integration for Home Assistant
+# EN: 🔥 ectoControl Adapter Integration for Home Assistant
 
 This integration connects **ectoControl** adapters that provide control of gas and electric boilers via various communication buses. Depending on the adapter model, supported protocols include **eBUS**, **OpenTherm**, **Navien**, and others.
 
