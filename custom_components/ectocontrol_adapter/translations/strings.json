@@ -1,0 +1,136 @@
+{
+    "title": "ectoControl Adapter",
+    "config": {
+        "step": {
+            "user": {
+                "title": "Connection Setup",
+                "description": "Set the connection parameters to the adapter using the Modbus protocol.",
+                "data": {
+                    "name": "Adapter Name",
+                    "response_timeout": "Response timeout, s",
+                    "modbus_type": "Connection type",
+                    "slave": "Slave/Unit ID",
+                    "host": "Host",
+                    "port": "Port",
+                    "device": "Device Path i.e. /dev/ttyUSB0",
+                    "baudrate": "Baud Rate, bps",
+                    "bytesize": "Data Bits",
+                    "parity": "Parity",
+                    "stopbits": "Stop Bits"
+                }
+            }
+        },
+        "error": {
+            "ec_modbus_connect_error": "Unable to connect to the Modbus device. Check the settings!",
+            "ec_uptime_reading_error": "Unable to read the Modbus register containing the adapter's uptime!",
+            "invalid_integer": "Invalid integer value",
+            "value_too_small": "Value too small",
+            "value_too_large": "Value too large"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Changing Connection Settings",
+                "description": "Updating adapter connection parameters via the Modbus protocol.",
+                "data": {
+                    "name": "Adapter Name",
+                    "response_timeout": "Response timeout, s",
+                    "modbus_type": "Connection type",
+                    "slave": "Slave/Unit ID",
+                    "host": "Host",
+                    "port": "Port",
+                    "device": "Device Path i.e. /dev/ttyUSB0",
+                    "baudrate": "Baud Rate, bps",
+                    "bytesize": "Data Bits",
+                    "parity": "Parity",
+                    "stopbits": "Stop Bits"
+                }
+            }
+        },
+        "error": {
+            "ec_modbus_connect_error": "Unable to connect to the Modbus device. Check the settings!",
+            "ec_uptime_reading_error": "Unable to read the Modbus register containing the adapter's uptime!",
+            "invalid_integer": "Invalid integer value",
+            "value_too_small": "Value too small",
+            "value_too_large": "Value too large"
+        }
+    },
+    "common": {
+        "not_selected": "Not selected..."
+    },
+    "entity": {
+        "sensor": {
+            "adapter_status_raw": {"name": "Adapter Status (raw)"},
+            "last_reboot_code": {"name": "Last Reboot Code"},
+            "adapter_bus": {"name": "Adapter Model"},
+            "adapter_version_raw": {"name": "Adapter Version (raw)"},
+            "adapter_sw_version": {"name": "Software Version"},
+            "adapter_hw_version": {"name": "Hardware Version"},
+            "adapter_uptime": {"name": "Adapter Uptime"},
+            "adapter_boot_time": {"name": "Adapter Boot Time"},
+            "coolant_min_temp": {"name": "Minimum Coolant Temperature"},
+            "coolant_max_temp": {"name": "Maximum Coolant Temperature"},
+            "dhw_min_temp": {"name": "Minimum DHW Temperature"},
+            "dhw_max_temp": {"name": "Maximum DHW Temperature"},
+            "coolant_temp": {"name": "Coolant Temperature"},
+            "dhw_temp": {"name": "DHW Temperature"},
+            "current_pressure": {"name": "Current Pressure"},
+            "current_flow_rate": {"name": "Current Flow Rate"},
+            "burner_modulation": {"name": "Burner Modulation"},
+            "burner_status_raw": {"name": "Burner Status (raw)"},
+            "main_error_code": {"name": "Main Error Code"},
+            "add_error_code": {"name": "Additional Error Code"},
+            "outer_temp": {"name": "Outer Temperature"},
+            "vendor_code": {"name": "Vendor Code"},
+            "model_code": {"name": "Model Code"},
+            "opentherm_errors": {"name": "OpenTherm Errors (raw)"}
+        },
+        "binary_sensor": {
+            "сonnectivity": {"name": "Boiler Connectivity"},
+            "burner_status": {"name": "Burner Status"},
+            "burner_heating": {"name": "Heating Status"},
+            "burner_dhw": {"name": "DHW Status"},
+            "opentherm_maintenance_required": {"name": "[OpenTherm] Maintenance required"},
+            "opentherm_boiler_blocked": {"name": "[OpenTherm] Boiler is blocked"},
+            "opentherm_low_pressure": {"name": "[OpenTherm] Low pressure"},
+            "opentherm_ignition_error": {"name": "[OpenTherm] Ignition error"},
+            "opentherm_low_air_pressure": {"name": "[OpenTherm] Low Air pressure"},
+            "opentherm_coolant_overheating": {"name": "[OpenTherm] Coolant overheating"}
+        },
+        "number": {
+            "coolant_temp": {"name": "Coolant Temperature"},
+            "coolant_emergency_temp": {"name": "Coolant Emergency Temperature"},
+            "coolant_min_temp": {"name": "Min. Coolant Temperature"},
+            "coolant_max_temp": {"name": "Max. Coolant temperature"},
+            "dhw_min_temp": {"name": "Min. DHW temperature"},
+            "dhw_max_temp": {"name": "Max. DHW temperature"},
+            "dhw_temp": {"name": "DHW temperature"},
+            "burner_modulation": {"name": "Burner modulation"}
+        },
+        "switch": {
+            "connect_type": {"name": "Switch to panel"}
+        },
+        "select": {
+            "connect_type": {
+                "name": "Connection type",
+                "state": {
+                    "adapter": "Adapter",
+                    "boiler_panel": "Boiler Panel"
+                }
+            },
+            "work_mode": {
+                "name": "Operating Mode",
+                "state": {
+                    "disabled": "Disabled",
+                    "dwh_only": "DWH only",
+                    "heating_dwh": "Heating + DWH"
+                }
+            }
+        },
+        "button": {
+            "command_reboot": {"name": "Adapter Reboot"},
+            "command_reset_boiler_errors": {"name": "Reset Boiler Errors"}
+        }
+    }
+}
