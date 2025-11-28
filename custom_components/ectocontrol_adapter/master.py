@@ -96,7 +96,7 @@ class ModbusMasterCoordinator:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                _LOGGER.error(f"Unexpected error in operation processor: {e}")
+                _LOGGER.error(f"Unexpected error in queue processing: {e}")
 
     async def _execute_operation(self, op: str, data: Dict[str, Any]):
         """ Backend for execute same operation """
