@@ -137,7 +137,7 @@ class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if self.next_step:
             return await self.next_step(user_input)
 
-        _LOGGER.warning("Request to create config (init step): %s", user_input)
+        _LOGGER.debug("Request to create config (init step): %s", user_input)
 
         if user_input is not None:
             self.config_data.update(user_input)
@@ -154,7 +154,7 @@ class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_connection(self, user_input=None):
         """ Handle the connection step. """
-        _LOGGER.warning("Request to create config (connection step): %s", user_input)
+        _LOGGER.debug("Request to create config (connection step): %s", user_input)
 
         errors = {}
         if user_input is not None:
@@ -194,7 +194,7 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
         if self.next_step:
             return await self.next_step(user_input)
 
-        _LOGGER.warning("Request to update options (init step): %s", user_input)
+        _LOGGER.debug("Request to update options (init step): %s", user_input)
 
         errors = {}
         if user_input is not None:
@@ -215,7 +215,7 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
 
     async def async_step_connection(self, user_input=None):
         """ Handle the connection step. """
-        _LOGGER.warning("Request to update options (connection step): %s", user_input)
+        _LOGGER.debug("Request to update options (connection step): %s", user_input)
 
         errors = {}
         if user_input is not None:
