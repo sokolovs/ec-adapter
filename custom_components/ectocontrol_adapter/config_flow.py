@@ -89,7 +89,7 @@ async def create_schema(hass, config_entry=None, user_input=None, type="init"):
                     vol.All(vol.Coerce(str), vol.In(MODBUS_TYPES)),
 
             vol.Required("slave", default=get_config("slave", DEFAULT_SLAVE_ID)):
-                vol.All(vol.Coerce(int), vol.Range(min=0, max=247)),
+                vol.All(vol.Coerce(int), vol.In(range(0, 248))),
         })
 
 
