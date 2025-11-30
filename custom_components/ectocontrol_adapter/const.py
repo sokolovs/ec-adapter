@@ -1,3 +1,9 @@
+from awesomeversion import AwesomeVersion
+
+from homeassistant.const import __version__ as HAVERSION  # noqa: N812
+
+HA_VERSION = AwesomeVersion(HAVERSION)
+
 # EC domain
 DOMAIN = "ectocontrol_adapter"
 SENSOR_UPDATE_SIGNAL = "EC_ADAPTER_OPTIONS_UPDATED"
