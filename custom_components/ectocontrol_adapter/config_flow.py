@@ -185,7 +185,8 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
     """ Handle options flow. """
 
     def __init__(self, config_entry):
-        self.config_entry = config_entry
+        if HA_VERSION < '2024.12':
+            self.config_entry = config_entry
         self.config_data = {}
         self.next_step = None
 
