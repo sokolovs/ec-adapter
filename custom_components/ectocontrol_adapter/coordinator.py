@@ -2,7 +2,7 @@ import logging
 from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
 from .master import ModbusMasterCoordinator
@@ -52,5 +52,5 @@ class ModbusDataUpdateCoordinator(DataUpdateCoordinator):
                 else:
                     data[register] = result.registers
         except Exception as e:
-            _LOGGER.error(f"Modbus exception while read: {e}")
+            raise UpdateFailed(f"Exception while Modbus read: {e}")
         return data
