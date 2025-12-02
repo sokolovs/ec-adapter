@@ -9,13 +9,14 @@ _LOGGER = logging.getLogger(__name__)
 
 def _unique_id_prefix(config: dict):
     mb_type = config.get("modbus_type")
+    slave = config.get("slave")
     if mb_type == "serial":
         device = config.get("device")
-        return f"{DOMAIN}_{mb_type}_{device}"
+        return f"{DOMAIN}_{mb_type}_{device}_{slave}"
     else:
         host = config.get("host")
         port = config.get("port")
-        return f"{DOMAIN}_{mb_type}_{host}_{port}"
+        return f"{DOMAIN}_{mb_type}_{host}_{port}_{slave}"
 
 
 class ModbusSensorMixin:
