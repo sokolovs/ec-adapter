@@ -6,7 +6,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 
-from .const import DOMAIN
+from .const import DOMAIN, OPT_NAME
 from .coordinator import ModbusDataUpdateCoordinator
 from .master import ModbusMasterCoordinator
 from .registers import REGISTERS_R, REGISTERS_W, REG_DEFAULT_SCAN_INTERVAL
@@ -32,7 +32,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     device = device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         identifiers={(DOMAIN, config_entry.entry_id)},
-        name=config_entry.options.get("name") or config_entry.data.get("name"),
+        name=config_entry.options.get(OPT_NAME) or config_entry.data.get(OPT_NAME),
         manufacturer="ectoControl"
     )
 

@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import Any, Dict, List
 
-from .const import QUEUE_TIMEOUT
+from .const import OPT_SLAVE, QUEUE_TIMEOUT
 from .helpers import create_modbus_client
 from .registers import (
     REG_DEFAULT_MAX_RETRIES,
@@ -20,10 +20,7 @@ class ModbusMasterCoordinator:
     def __init__(self, hass, config_entry):
         self.hass = hass
         self.config_entry = config_entry
-
-        self._config = config_entry.data.copy()
-        self._config.update(config_entry.options)
-
+        self._config = config_entry.options or config_entry.data
         self._client = None
         self._queue = asyncio.Queue()
         self._processing_task = None
@@ -107,13 +104,13 @@ class ModbusMasterCoordinator:
                 return await client.read_holding_registers(
                     address=data["address"],
                     count=data["count"],
-                    device_id=self._config["slave"]
+                    device_id=int(self._config[OPT_SLAVE])
                 )
             elif op == "write_registers":
                 result = await client.write_registers(
                     address=data["address"],
                     values=data["values"],
-                    device_id=self._config["slave"]
+                    device_id=int(self._config[OPT_SLAVE])
                 )
 
                 status_register = (
@@ -147,7 +144,7 @@ class ModbusMasterCoordinator:
             try:
                 result = await client.read_holding_registers(
                     address=status_register,
-                    device_id=self._config["slave"])
+                    device_id=int(self._config[OPT_SLAVE]))
                 if result is not None:
                     if result.isError():
                         _LOGGER.error(f"Modbus read status register={status_register:#06x} error")
