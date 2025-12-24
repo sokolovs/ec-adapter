@@ -5,47 +5,36 @@ from pymodbus.client import (
     AsyncModbusUdpClient
 )
 
-
-def get_config_value(config_entry, key, default=None):
-    """
-    Returns an option from the configuration according to the search priority:
-        options > data > default
-    """
-    if config_entry:
-        if key in config_entry.options:
-            return config_entry.options.get(key)
-        if key in config_entry.data:
-            return config_entry.data.get(key)
-    return default
+from .const import *  # noqa F403
 
 
 def create_modbus_client(config_data):
     """ Returns a Modbus client instance based on the `config_data` """
-    if config_data["modbus_type"] == "tcp":
+    if config_data[OPT_MODBUS_TYPE] == MODBUS_TYPE_TCP:
         return AsyncModbusTcpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"]
+            host=config_data[OPT_HOST],
+            port=int(config_data[OPT_PORT]),
+            timeout=int(config_data[OPT_RESPONSE_TIMEOUT])
         )
-    elif config_data["modbus_type"] == "udp":
+    elif config_data[OPT_MODBUS_TYPE] == MODBUS_TYPE_UDP:
         return AsyncModbusUdpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"]
+            host=config_data[OPT_HOST],
+            port=int(config_data[OPT_PORT]),
+            timeout=int(config_data[OPT_RESPONSE_TIMEOUT])
         )
-    elif config_data["modbus_type"] == "rtuovertcp":
+    elif config_data[OPT_MODBUS_TYPE] == MODBUS_TYPE_RTU_OVER_TCP:
         return AsyncModbusTcpClient(
-            host=config_data["host"],
-            port=config_data["port"],
-            timeout=config_data["response_timeout"],
+            host=config_data[OPT_HOST],
+            port=int(config_data[OPT_PORT]),
+            timeout=int(config_data[OPT_RESPONSE_TIMEOUT]),
             framer=FramerType.RTU
         )
-    elif config_data["modbus_type"] == "serial":
+    elif config_data[OPT_MODBUS_TYPE] == MODBUS_TYPE_SERIAL:
         return AsyncModbusSerialClient(
-            port=config_data["device"],
-            baudrate=config_data["baudrate"],
-            bytesize=config_data["bytesize"],
-            parity=config_data["parity"],
-            stopbits=config_data["stopbits"],
-            timeout=config_data["response_timeout"]
+            port=config_data[OPT_DEVICE],
+            baudrate=int(config_data[OPT_BAUDRATE]),
+            bytesize=int(config_data[OPT_BYTESIZE]),
+            parity=config_data[OPT_PARITY],
+            stopbits=int(config_data[OPT_STOPBITS]),
+            timeout=int(config_data[OPT_RESPONSE_TIMEOUT])
         )

@@ -56,9 +56,6 @@
             "value_too_large": "Значение слишком велико"
         }
     },
-    "common": {
-        "not_selected": "Не выбрано..."
-    },
     "entity": {
         "sensor": {
             "adapter_status_raw": {"name": "Статус адаптера (raw)"},
@@ -123,8 +120,11 @@
                 "name": "Режим работы",
                 "state": {
                     "disabled": "Выключен",
-                    "dwh_only": "Только ГВС",
-                    "heating_dwh": "Отопление + ГВС"
+                    "dwh_only": "ГВС",
+                    "heating_only": "Отопление",
+                    "second_only": "Второй контур",
+                    "heating_dwh": "Отопление + ГВС",
+                    "heating_second": "Отопление + Второй контур"
                 }
             }
         },

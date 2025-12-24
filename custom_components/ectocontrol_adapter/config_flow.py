@@ -3,93 +3,75 @@ import logging
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
-from homeassistant.helpers.translation import async_get_translations
+from homeassistant.helpers.selector import (
+    NumberSelector,
+    NumberSelectorConfig,
+    NumberSelectorMode,
+    SelectSelector,
+    SelectSelectorConfig,
+    SelectSelectorMode,
+    TextSelector,
+    TextSelectorConfig,
+    TextSelectorType
+)
 
 import voluptuous as vol
 
 from .const import *  # noqa F403
-from .helpers import create_modbus_client, get_config_value
+from .helpers import create_modbus_client
 from .registers import REGISTERS_R, REG_R_ADAPTER_UPTIME
 
 _LOGGER = logging.getLogger(__name__)
 
 
-async def get_user_language(hass):
-    user_language = hass.data.get("language")
-    return user_language if user_language else hass.config.language
-
-
-async def get_translation(hass, key, default="Not found..."):
-    language = await get_user_language(hass)
-    translations = await async_get_translations(hass, language, "common", [])
-    return translations.get(key, default)
-
-
 async def create_schema(hass, config_entry=None, user_input=None, type="init"):
     """ Common schema for ConfigFlow and OptionsFlow."""
-
-    def get_config(key, default=None):
-        if user_input is not None:
-            return user_input.get(key, default)
-        return get_config_value(config_entry, key, default)
 
     if type == "serial":
         return vol.Schema({
             # Serial settings
-            vol.Required(
-                "device",
-                default=get_config("device", "/dev/ttyUSB0")): str,
+            vol.Required(OPT_DEVICE, default=DEFAULT_DEVICE):
+                TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT)),
 
-            vol.Required(
-                "baudrate",
-                default=get_config("baudrate", DEFAULT_SERIAL_BAUDRATE)):
-                    vol.All(vol.Coerce(int), vol.In(SERIAL_BAUDRATES)),
+            vol.Required(OPT_BAUDRATE, default=str(DEFAULT_SERIAL_BAUDRATE)):
+                SelectSelector(SelectSelectorConfig(
+                    options=SERIAL_BAUDRATES, mode=SelectSelectorMode.DROPDOWN)),
 
-            vol.Required(
-                "bytesize",
-                default=get_config("bytesize", DEFAULT_SERIAL_BYTESIZE)):
-                    vol.All(vol.Coerce(int), vol.In(SERIAL_BYTESIZES)),
+            vol.Required(OPT_BYTESIZE, default=str(DEFAULT_SERIAL_BYTESIZE)):
+                SelectSelector(SelectSelectorConfig(
+                    options=SERIAL_BYTESIZES, mode=SelectSelectorMode.DROPDOWN)),
 
-            vol.Required(
-                "parity",
-                default=get_config("parity", DEFAULT_PARITY)):
-                    vol.All(vol.Coerce(str), vol.In(SERIAL_PARITIES)),
+            vol.Required(OPT_PARITY, default=DEFAULT_PARITY):
+                SelectSelector(SelectSelectorConfig(
+                    options=SERIAL_PARITIES, mode=SelectSelectorMode.DROPDOWN)),
 
-            vol.Required(
-                "stopbits",
-                default=get_config("stopbits", DEFAULT_STOPBITS)):
-                    vol.All(vol.Coerce(int), vol.In(SERIAL_STOPBITS)),
+            vol.Required(OPT_STOPBITS, default=str(DEFAULT_STOPBITS)):
+                SelectSelector(SelectSelectorConfig(
+                    options=SERIAL_STOPBITS, mode=SelectSelectorMode.DROPDOWN)),
         })
     elif type in ("tcp", "udp", "rtuovertcp"):
         return vol.Schema({
             # Host + Port settings
-            vol.Required(
-                "host",
-                default=get_config("host")): str,
+            vol.Required(OPT_HOST): TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT)),
 
-            vol.Required(
-                "port",
-                default=get_config("port", 502)):
-                    vol.All(vol.Coerce(int), vol.Range(min=1, max=65535)),
+            vol.Required(OPT_PORT, default=DEFAULT_PORT):
+                NumberSelector(NumberSelectorConfig(min=1, max=65535, mode=NumberSelectorMode.BOX)),
 
         })
     else:
         return vol.Schema({
-            vol.Required("name", default=get_config("name", "")): str,
+            vol.Required(OPT_NAME): TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT)),
 
             # Settings
-            vol.Required(
-                "response_timeout",
-                default=get_config("response_timeout", DEFAULT_RESPONSE_TIMEOUT)):
-                    vol.All(vol.Coerce(int), vol.Range(min=1, max=10)),
+            vol.Required(OPT_RESPONSE_TIMEOUT, default=DEFAULT_RESPONSE_TIMEOUT):
+                NumberSelector(NumberSelectorConfig(min=1, max=10, mode=NumberSelectorMode.BOX)),
 
-            vol.Required(
-                "modbus_type",
-                default=get_config("modbus_type", DEFAULT_MODBUS_TYPE)):
-                    vol.All(vol.Coerce(str), vol.In(MODBUS_TYPES)),
+            vol.Required(OPT_MODBUS_TYPE, default=DEFAULT_MODBUS_TYPE):
+                SelectSelector(SelectSelectorConfig(
+                    options=MODBUS_TYPES, mode=SelectSelectorMode.DROPDOWN)),
 
-            vol.Required("slave", default=get_config("slave", DEFAULT_SLAVE_ID)):
-                vol.All(vol.Coerce(int), vol.In(range(0, 248))),
+            vol.Required(OPT_SLAVE, default=DEFAULT_SLAVE_ID):
+                NumberSelector(NumberSelectorConfig(min=0, max=248, mode=NumberSelectorMode.BOX)),
         })
 
 
@@ -107,7 +89,7 @@ async def check_user_input(user_input):
             adapter_uptime = await client.read_holding_registers(
                 address=REG_R_ADAPTER_UPTIME,
                 count=REGISTERS_R[REG_R_ADAPTER_UPTIME]["count"],
-                device_id=user_input["slave"]
+                device_id=int(user_input[OPT_SLAVE])
             )
 
             if adapter_uptime is None or adapter_uptime.isError():
@@ -124,7 +106,7 @@ async def check_user_input(user_input):
 
 
 class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """ Handle a config flow for Weather Dependent Automation Sensor. """
+    """ Handle a config flow for ectoControl Adapter. """
 
     VERSION = 1
 
@@ -162,16 +144,16 @@ class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors = await check_user_input(self.config_data)
             if not errors:
                 return self.async_create_entry(
-                    title=self.config_data["name"],
+                    title=self.config_data[OPT_NAME],
                     data=self.config_data)
 
         schema = await create_schema(
             hass=self.hass,
             user_input=user_input,
-            type=self.config_data["modbus_type"])
+            type=self.config_data[OPT_MODBUS_TYPE])
         return self.async_show_form(
             step_id="user",
-            data_schema=schema,
+            data_schema=self.add_suggested_values_to_schema(schema, user_input or {}),
             errors=errors
         )
 
@@ -182,7 +164,7 @@ class ECAdapterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class ECAdapterOptionsFlow(config_entries.OptionsFlow):
-    """ Handle options flow. """
+    """ Handle options flow for ectoControl Adapter. """
 
     def __init__(self, config_entry):
         if HA_VERSION < '2024.12':
@@ -208,9 +190,11 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
             config_entry=self.config_entry,
             user_input=user_input
         )
+
+        options = self.config_entry.options or self.config_entry.data
         return self.async_show_form(
             step_id="init",
-            data_schema=schema,
+            data_schema=self.add_suggested_values_to_schema(schema, options),
             errors=errors
         )
 
@@ -236,9 +220,11 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
             hass=self.hass,
             config_entry=self.config_entry,
             user_input=user_input,
-            type=self.config_data["modbus_type"])
+            type=self.config_data[OPT_MODBUS_TYPE])
+
+        options = user_input or self.config_entry.options or self.config_entry.data or {}
         return self.async_show_form(
             step_id="init",
-            data_schema=schema,
+            data_schema=self.add_suggested_values_to_schema(schema, options),
             errors=errors
         )

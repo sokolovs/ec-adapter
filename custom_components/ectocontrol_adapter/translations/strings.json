@@ -56,9 +56,6 @@
             "value_too_large": "Value too large"
         }
     },
-    "common": {
-        "not_selected": "Not selected..."
-    },
     "entity": {
         "sensor": {
             "adapter_status_raw": {"name": "Adapter Status (raw)"},
@@ -124,7 +121,10 @@
                 "state": {
                     "disabled": "Disabled",
                     "dwh_only": "DWH only",
-                    "heating_dwh": "Heating + DWH"
+                    "heating_only": "Heating only",
+                    "second_only": "Second Circuit only",
+                    "heating_dwh": "Heating + DWH",
+                    "heating_second": "Heating + Second Circuit"
                 }
             }
         },

@@ -512,7 +512,10 @@ REGISTERS_W = {
         "choices": {
             "disabled": 0b000,
             "dwh_only": 0b010,
-            "heating_dwh": 0b011
+            "heating_only": 0b001,
+            "second_only": 0b100,
+            "heating_dwh": 0b011,
+            "heating_second": 0b101
         }
     },
     REG_W_COMMAND: {

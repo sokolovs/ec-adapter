@@ -28,9 +28,7 @@ class ModbusDataUpdateCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=scan_interval))
         self.hass = hass
         self.config_entry = config_entry
-
-        self._config = config_entry.data.copy()
-        self._config.update(config_entry.options)
+        self._config = config_entry.options or config_entry.data
         self._master = master
 
         self._registers = [addr for addr, config in registers]
