@@ -143,9 +143,13 @@ class ModbusNumber(ModbusUniqIdMixin, NumberEntity, RestoreEntity):
         if new_state.state == "off":
             return
 
-        last_state = await self.async_get_last_state()
-        if last_state is not None:
-            await self.async_set_native_value(value=float(last_state.state))
+        # Write current value or last state
+        write_value = self._attr_native_value
+        if write_value is None and (last_state := await self.async_get_last_state()):
+            write_value = float(last_state.state)
+
+        if write_value is not None:
+            await self.async_set_native_value(value=write_value)
 
     @property
     def assumed_state(self) -> bool:
