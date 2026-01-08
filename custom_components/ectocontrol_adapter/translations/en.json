@@ -84,7 +84,7 @@
             "opentherm_errors": {"name": "OpenTherm Errors (raw)"}
         },
         "binary_sensor": {
-            "сonnectivity": {"name": "Boiler Connectivity"},
+            "connectivity": {"name": "Boiler Connectivity"},
             "burner_status": {"name": "Burner Status"},
             "burner_heating": {"name": "Heating Status"},
             "burner_dhw": {"name": "DHW Status"},

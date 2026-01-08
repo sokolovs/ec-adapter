@@ -84,7 +84,7 @@
             "opentherm_errors": {"name": "Флаги ошибок OpenTherm (raw)"}
         },
         "binary_sensor": {
-            "сonnectivity": {"name": "Связь с котлом"},
+            "connectivity": {"name": "Связь с котлом"},
             "burner_status": {"name": "Состояние горелки"},
             "burner_heating": {"name": "Состояние отопления"},
             "burner_dhw": {"name": "Состояние ГВС"},

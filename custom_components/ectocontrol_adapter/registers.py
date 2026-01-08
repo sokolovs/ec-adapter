@@ -123,7 +123,7 @@ REGISTERS_R = {
             },
             0x0800: {
                 "type": BM_BINARY,
-                "name": "сonnectivity",
+                "name": "connectivity",
                 "device_class": BinarySensorDeviceClass.CONNECTIVITY
             }
         }
@@ -416,7 +416,7 @@ REGISTERS_W = {
         "unit_of_measurement": "°C",
         "icon": "mdi:coolant-temperature",
         "device_class": NumberDeviceClass.TEMPERATURE,
-        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
     },
     REG_W_COOLANT_EMERGENCY_TEMP: {
         "name": "coolant_emergency_temp",
@@ -441,7 +441,7 @@ REGISTERS_W = {
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
-        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
     },
     REG_W_COOLANT_MAX_TEMP: {
         "name": "coolant_max_temp",
@@ -454,7 +454,7 @@ REGISTERS_W = {
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
-        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
     },
     REG_W_DHW_MIN_TEMP: {
         "name": "dhw_min_temp",
@@ -467,7 +467,7 @@ REGISTERS_W = {
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
-        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
     },
     REG_W_DHW_MAX_TEMP: {
         "name": "dhw_max_temp",
@@ -480,7 +480,7 @@ REGISTERS_W = {
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
-        "write_after_connected": (REG_R_ADAPTER_STATUS, "сonnectivity")
+        "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
     },
     REG_W_DHW_TEMP: {
         "name": "dhw_temp",
