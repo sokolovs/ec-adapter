@@ -212,7 +212,7 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
                     self.config_entry, options=self.config_data)
 
                 # Send signal to subscribers
-                async_dispatcher_send(self.hass, SENSOR_UPDATE_SIGNAL)
+                async_dispatcher_send(self.hass, f"{SENSOR_UPDATE_SIGNAL}_{self.config_entry.entry_id}")
 
                 return self.async_create_entry(title="", data=self.config_data)
 

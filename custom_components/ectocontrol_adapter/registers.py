@@ -3,6 +3,8 @@ from homeassistant.components.button import ButtonDeviceClass
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.switch import SwitchDeviceClass  # noqa: F401
+from homeassistant.const import (
+    PERCENTAGE, UnitOfPressure, UnitOfTemperature, UnitOfTime, UnitOfVolumeFlowRate)
 from homeassistant.helpers.entity import EntityCategory
 
 from .converters import uptime_to_boottime
@@ -157,7 +159,7 @@ REGISTERS_R = {
         "data_type": "uint32",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "s",
+        "unit_of_measurement": UnitOfTime.SECONDS,
         "device_class": SensorDeviceClass.DURATION,
         "category": EntityCategory.DIAGNOSTIC,
         "converters": {
@@ -174,7 +176,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "category": EntityCategory.DIAGNOSTIC
     },
@@ -184,7 +186,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "category": EntityCategory.DIAGNOSTIC
     },
@@ -194,7 +196,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "category": EntityCategory.DIAGNOSTIC
     },
@@ -204,7 +206,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 60,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "category": EntityCategory.DIAGNOSTIC
     },
@@ -214,7 +216,7 @@ REGISTERS_R = {
         "data_type": "int16",
         "input_type": "holding",
         "scan_interval": 15,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "scale": 0.1,
         "icon": "mdi:coolant-temperature"
@@ -225,7 +227,7 @@ REGISTERS_R = {
         "data_type": "uint16",
         "input_type": "holding",
         "scan_interval": 15,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "scale": 0.1,
         "icon": "mdi:thermometer-water"
@@ -236,7 +238,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
-        "unit_of_measurement": "bar",
+        "unit_of_measurement": UnitOfPressure.BAR,
         "device_class": SensorDeviceClass.PRESSURE,
         "scale": 0.1
     },
@@ -246,7 +248,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 15,
-        "unit_of_measurement": "L/min",
+        "unit_of_measurement": UnitOfVolumeFlowRate.LITERS_PER_MINUTE,
         "device_class": SensorDeviceClass.VOLUME_FLOW_RATE,
         "scale": 0.1
     },
@@ -256,7 +258,7 @@ REGISTERS_R = {
         "data_type": "uint8",
         "input_type": "holding",
         "scan_interval": 5,
-        "unit_of_measurement": "%",
+        "unit_of_measurement": PERCENTAGE,
         "device_class": SensorDeviceClass.POWER_FACTOR
     },
     REG_R_BURNER_STATUS: {
@@ -309,7 +311,7 @@ REGISTERS_R = {
         "data_type": "int8",
         "input_type": "holding",
         "scan_interval": 15,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "device_class": SensorDeviceClass.TEMPERATURE,
         "icon": "mdi:home-thermometer"
     },
@@ -413,7 +415,7 @@ REGISTERS_W = {
         "step": 1,
         "scale": 10,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:coolant-temperature",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "write_after_connected": (REG_R_ADAPTER_STATUS, "connectivity")
@@ -426,7 +428,7 @@ REGISTERS_W = {
         "step": 1,
         "scale": 10,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-alert",
         "device_class": NumberDeviceClass.TEMPERATURE
     },
@@ -437,7 +439,7 @@ REGISTERS_W = {
         "initial_value": 40,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
@@ -450,7 +452,7 @@ REGISTERS_W = {
         "initial_value": 80,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
@@ -463,7 +465,7 @@ REGISTERS_W = {
         "initial_value": 40,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-minus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
@@ -476,7 +478,7 @@ REGISTERS_W = {
         "initial_value": 55,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-plus",
         "device_class": NumberDeviceClass.TEMPERATURE,
         "category": EntityCategory.CONFIG,
@@ -489,7 +491,7 @@ REGISTERS_W = {
         "initial_value": 40,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "°C",
+        "unit_of_measurement": UnitOfTemperature.CELSIUS,
         "icon": "mdi:thermometer-water",
         "device_class": NumberDeviceClass.TEMPERATURE
     },
@@ -500,7 +502,7 @@ REGISTERS_W = {
         "initial_value": 0,
         "step": 1,
         "input_type": NUMBER_INPUT,
-        "unit_of_measurement": "%",
+        "unit_of_measurement": PERCENTAGE,
         "icon": "mdi:gas-burner",
         "device_class": NumberDeviceClass.POWER_FACTOR
     },
