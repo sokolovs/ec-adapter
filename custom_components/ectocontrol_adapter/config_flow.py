@@ -209,7 +209,9 @@ class ECAdapterOptionsFlow(config_entries.OptionsFlow):
             if not errors:
                 # Update configuration
                 self.hass.config_entries.async_update_entry(
-                    self.config_entry, options=self.config_data)
+                    self.config_entry,
+                    title=self.config_data[OPT_NAME],
+                    options=self.config_data)
 
                 # Send signal to subscribers
                 async_dispatcher_send(self.hass, f"{SENSOR_UPDATE_SIGNAL}_{self.config_entry.entry_id}")
