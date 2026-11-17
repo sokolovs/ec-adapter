@@ -5,7 +5,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
-from .master import ModbusMasterCoordinator
+from .master import ModbusMasterHandle
 from .registers import REGISTERS_R, REG_DEFAULT_SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class ModbusDataUpdateCoordinator(DataUpdateCoordinator):
             self,
             hass: HomeAssistant,
             config_entry,
-            master: ModbusMasterCoordinator,
+            master: ModbusMasterHandle,
             registers,
             scan_interval=REG_DEFAULT_SCAN_INTERVAL):
         super().__init__(

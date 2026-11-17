@@ -36,12 +36,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         manufacturer="ectoControl"
     )
 
-    # Create and start Modbus master coordinator
-    master_coordinator = ModbusMasterCoordinator(
-        hass=hass,
-        config_entry=config_entry
-    )
-    await master_coordinator.async_start()
+    # Get or create the shared Modbus master for this bus
+    # (one singleton per unique connection, shared between entries)
+    master_handle = await ModbusMasterCoordinator.async_acquire(hass, config_entry)
 
     # Group registers by scan interval
     update_register_groups = {}
@@ -57,7 +54,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         update_coordinator = ModbusDataUpdateCoordinator(
             hass=hass,
             config_entry=config_entry,
-            master=master_coordinator,
+            master=master_handle,
             registers=registers,
             scan_interval=scan_interval
         )
@@ -67,7 +64,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         update_coordinators[scan_interval] = update_coordinator
 
     hass.data[DOMAIN][config_entry.entry_id] = {
-        "master_coordinator": master_coordinator,
+        "master_coordinator": master_handle,
         "device_id": device.id,
         "update_coordinators": update_coordinators,
         "update_register_groups": update_register_groups,
@@ -87,9 +84,11 @@ async def async_update_options(hass: HomeAssistant, config_entry: ConfigEntry) -
 
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """ Unload a config entry. """
-    await hass.config_entries.async_unload_platforms(config_entry, _PLATFORMS)
+    unload_ok = await hass.config_entries.async_unload_platforms(config_entry, _PLATFORMS)
+    if unload_ok:
+        # Drop this entry's reference to the shared master;
+        # the master stops when the last entry on the bus is unloaded
+        entry_data = hass.data[DOMAIN].pop(config_entry.entry_id)
+        await entry_data["master_coordinator"].async_release()
 
-    master_coordinator = hass.data[DOMAIN][config_entry.entry_id]["master_coordinator"]
-    await master_coordinator.async_stop()
-
-    return True
+    return unload_ok
