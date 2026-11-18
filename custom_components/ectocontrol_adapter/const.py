@@ -8,6 +8,9 @@ HA_VERSION = AwesomeVersion(HAVERSION)
 DOMAIN = "ectocontrol_adapter"
 SENSOR_UPDATE_SIGNAL = "EC_ADAPTER_OPTIONS_UPDATED"
 
+# Registry of shared Modbus masters (one per unique bus)
+DATA_MASTERS = "masters"
+
 # Config options
 OPT_NAME = "name"
 OPT_RESPONSE_TIMEOUT = "response_timeout"
